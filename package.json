@@ -9,12 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/genai": "^1.39.0",
+    "@google/genai": "^1.42.0",
     "@supabase/supabase-js": "^2.97.0",
+    "drizzle-zod": "^0.8.3",
     "lucide-react": "^0.563.0",
+    "p-limit": "^7.3.0",
+    "p-retry": "^7.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "recharts": "^3.7.0"
+    "recharts": "^3.7.0",
+    "zod": "^4.3.6",
+    "zod-validation-error": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

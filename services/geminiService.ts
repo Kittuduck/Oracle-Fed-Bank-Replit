@@ -1,10 +1,15 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { TradeOffAnalysis } from "../types";
 
-const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+const apiKey = (process.env as any).AI_INTEGRATIONS_GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
+const baseUrl = (process.env as any).AI_INTEGRATIONS_GEMINI_BASE_URL || '';
 
-const MODEL_NAME = 'gemini-2.0-flash';
+const ai = apiKey ? new GoogleGenAI({
+  apiKey,
+  ...(baseUrl ? { httpOptions: { apiVersion: "", baseUrl } } : {}),
+}) : null;
+
+const MODEL_NAME = 'gemini-2.5-flash';
 
 const SYSTEM_INSTRUCTION = `
 Role: You are "Oracle," the proactive, agentic financial mind of a premium banking app (Federal Bank).
