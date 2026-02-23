@@ -1,0 +1,7 @@
+{
+  "name": "Oracle Federal bank - PN",
+  "description": "A premium AI banking agent for high-net-worth individuals, managing autonomy, guidance, and protection.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
