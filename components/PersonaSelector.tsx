@@ -18,7 +18,7 @@ const personaIcons: Record<string, any> = {
 };
 
 const personaGradients: Record<string, string> = {
-  advait: 'from-[#1e3a5f] to-[#0a1628]',
+  advait: 'from-[#004d9c] to-[#002d5e]',
   rajesh: 'from-[#004d9c] to-[#001d3d]',
   ishan: 'from-[#7c3aed] to-[#3b0764]',
   kapoor: 'from-[#065f46] to-[#022c22]',

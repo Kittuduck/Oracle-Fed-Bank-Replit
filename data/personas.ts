@@ -89,7 +89,7 @@ export const PERSONAS: PersonaProfile[] = [
     avatar: 'A',
     tagline: 'Agile Orchestrator',
     description: 'The "Agile Orchestrator" balancing multi-generational support with "Fat FIRE" goals. Needs an autonomous Oracle.',
-    accentColor: '#1e3a5f',
+    accentColor: '#004d9c',
     features: [
       { title: 'Fat FIRE Planner', description: 'Track and optimize path to Financial Independence by 50.', icon: 'TrendingUp' },
       { title: 'Family Shield', description: 'World-class healthcare management for parents. Auto-fund medical reserves.', icon: 'ShieldCheck' },
