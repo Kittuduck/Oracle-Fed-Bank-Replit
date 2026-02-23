@@ -5,11 +5,9 @@ const apiKey = (process.env as any).AI_INTEGRATIONS_GEMINI_API_KEY || (import.me
 
 const isReplit = typeof window !== 'undefined' && (window.location.hostname.includes('replit') || window.location.hostname.includes('repl.co'));
 
-const ai = apiKey ? new GoogleGenAI({
+const ai = isReplit && apiKey ? new GoogleGenAI({
   apiKey,
-  httpOptions: isReplit
-    ? { apiVersion: "", baseUrl: window.location.origin + '/gemini-proxy' }
-    : { baseUrl: "https://generativelanguage.googleapis.com" },
+  httpOptions: { apiVersion: "", baseUrl: window.location.origin + '/gemini-proxy' },
 }) : null;
 
 const MODEL_NAME = isReplit ? 'gemini-2.5-flash' : 'gemini-2.5-flash-lite';
@@ -50,6 +48,22 @@ JSON Schema:
 `;
 };
 
+async function callGeminiProxy(model: string, contents: any[], config: any): Promise<string> {
+  const response = await fetch('/api/gemini', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model, contents, config }),
+  });
+
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
+    throw new Error(errData.error || `API returned ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.text || '{}';
+}
+
 export interface NewGoalData {
   title: string;
   targetAmount: number;
@@ -82,15 +96,6 @@ export interface CardRecommendation {
   kfsLink: string;
 }
 
-export interface CardRecommendation {
-  cardCode: "CELESTA" | "IMPERIO" | "SIGNET";
-  reason: string;
-  apr: string;
-  annualFee: string;
-  benefits: string[];
-  kfsLink: string;
-}
-
 export const chatWithOrchestrator = async (
   history: { role: 'user' | 'model'; parts: { text: string }[] }[],
   message: string,
@@ -99,8 +104,6 @@ export const chatWithOrchestrator = async (
 ): Promise<OrchestratorResponse> => {
 
   try {
-    if (!ai) throw new Error("API key not configured.");
-
     const contextPrompt = `
       CURRENT FINANCIAL STATE:
       - Liquid Cash: ₹${currentContext?.liquid || 1240500}
@@ -110,23 +113,33 @@ export const chatWithOrchestrator = async (
       User Message: ${message}
     `;
 
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: [
-        ...history.map(h => ({
-          role: h.role,
-          parts: h.parts
-        })),
-        { role: 'user' as const, parts: [{ text: contextPrompt }] }
-      ],
-      config: {
-        systemInstruction: getSystemInstruction(personaContext),
-        responseMimeType: "application/json",
-        maxOutputTokens: 8192,
-      },
-    });
+    const contents = [
+      ...history.map(h => ({
+        role: h.role,
+        parts: h.parts
+      })),
+      { role: 'user' as const, parts: [{ text: contextPrompt }] }
+    ];
 
-    const text = response.text || '{}';
+    const config = {
+      systemInstruction: getSystemInstruction(personaContext),
+      responseMimeType: "application/json",
+      maxOutputTokens: 8192,
+    };
+
+    let text: string;
+
+    if (isReplit && ai) {
+      const response = await ai.models.generateContent({
+        model: MODEL_NAME,
+        contents,
+        config,
+      });
+      text = response.text || '{}';
+    } else {
+      text = await callGeminiProxy(MODEL_NAME, contents, config);
+    }
+
     return JSON.parse(text) as OrchestratorResponse;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
@@ -149,9 +162,6 @@ export const analyzeTradeOff = async (liquidCash: number, surgeryCost: number, e
   };
 };
 
-/**
- * AI-Powered Credit Card Recommendation
- */
 export async function getCardRecommendation(profile: {
   income: number;
   liquidCash: number;
@@ -168,23 +178,31 @@ export async function getCardRecommendation(profile: {
     kfsLink: "https://www.federalbank.co.in/kfs"
   };
 
-  if (!ai) return fallback;
-
   try {
     const prompt = `User Profile: [Income: ₹${profile.income}, Liquid: ₹${profile.liquidCash}, Spend: ₹${profile.monthlySpend}/mo, Focus: ${profile.primarySpend}, Stage: ${profile.lifeStage}]
 Recommend one: CELESTA (>3L income), IMPERIO (>1L), or SIGNET.
 Return JSON only: {cardCode, reason, apr, annualFee, benefits[], kfsLink}`;
 
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: {
-        responseMimeType: "application/json",
-        maxOutputTokens: 8192,
-      },
-    });
+    const contents = [{ role: 'user', parts: [{ text: prompt }] }];
+    const config = {
+      responseMimeType: "application/json",
+      maxOutputTokens: 8192,
+    };
 
-    return JSON.parse(response.text || '{}');
+    let text: string;
+
+    if (isReplit && ai) {
+      const response = await ai.models.generateContent({
+        model: MODEL_NAME,
+        contents,
+        config,
+      });
+      text = response.text || '{}';
+    } else {
+      text = await callGeminiProxy(MODEL_NAME, contents, config);
+    }
+
+    return JSON.parse(text);
   } catch (error) {
     console.error("Card Recommendation Error:", error);
     return fallback;
