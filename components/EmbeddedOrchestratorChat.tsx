@@ -14,6 +14,7 @@ interface EmbeddedOrchestratorChatProps {
     currentFinancials: { liquid: number, need: number, goal: number };
     oracleActive: boolean;
     initialPrompt?: string;
+    persona?: any;
 }
 
 interface Message {
@@ -35,7 +36,8 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     onNavigateToDashboard,
     onPayCCBill,
     currentFinancials,
-    initialPrompt
+    initialPrompt,
+    persona
 }) => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -192,7 +194,13 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
 
         try {
             const history = messages.filter(m => m.id !== 'init').map(m => ({ role: m.role, parts: [{ text: m.text }] }));
-            const response = await chatWithOrchestrator(history, text, currentFinancials);
+            const response = await chatWithOrchestrator(history, text, currentFinancials, persona ? {
+                name: persona.name,
+                age: persona.age,
+                role: persona.role,
+                goals: persona.goals.map((g: any) => g.title).join(', '),
+                frustrations: ''
+            } : undefined);
 
             const aiMsgId = (Date.now() + 1).toString();
             const aiMsg: Message = {

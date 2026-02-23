@@ -8,6 +8,7 @@ interface PersonaSelectorProps {
 }
 
 const personaIcons: Record<string, any> = {
+  advait: Briefcase,
   rajesh: Briefcase,
   ishan: GraduationCap,
   kapoor: Shield,
@@ -15,6 +16,7 @@ const personaIcons: Record<string, any> = {
 };
 
 const personaGradients: Record<string, string> = {
+  advait: 'from-[#1e3a5f] to-[#0a1628]',
   rajesh: 'from-[#004d9c] to-[#001d3d]',
   ishan: 'from-[#7c3aed] to-[#3b0764]',
   kapoor: 'from-[#065f46] to-[#022c22]',
@@ -22,6 +24,7 @@ const personaGradients: Record<string, string> = {
 };
 
 const personaBgAccents: Record<string, string> = {
+  advait: 'bg-blue-500/10',
   rajesh: 'bg-blue-500/10',
   ishan: 'bg-violet-500/10',
   kapoor: 'bg-emerald-500/10',

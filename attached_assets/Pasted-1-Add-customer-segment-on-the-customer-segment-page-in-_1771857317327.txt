@@ -1,0 +1,20 @@
+1. Add customer segment on the customer segment page in the same way as other customer segments displayed just now. Keep this one on the top: ’Salaried Professional: Advait (34): Busy & Organized. The "Agile Orchestrator" balancing multi-generational support with "Fat FIRE" goals. Needs an autonomous "Oracle" to navigate life-event complexity and ensure family resilience. 
+Goals
+* To achieve "Fat FIRE" (Financial Independence, Retire Early) by 50
+* Wants his parents to have world class healthcare
+* Aspires for good education for daughter
+Frustrations / Pain points
+* Information Overload: Struggles to navigate through data deluge for quick decision-making
+* Invisible Admin work: Hates manually intervening to move funds between his parents' medical fund and his liquid savings
+* The Fragility Fear: Apprehensive of "black swan" event e.g. health crisis for his parents or job loss which could potentially derail his goals
+* Constant pressure of being the main financial support for three generations of his family
+* Values his time more than anything and sees manual banking tasks as a failure of technology
+Tech capabilities
+* Early adopter; manages everything via apps, and automation. Frequent user of LLMs for both official and personal work.
+
+2. Customise the Profile sections like financial hub, user email, dependents to suit the chosen customer segment. Change employment to occupation and show the occupation of the chose customer segment. 
+3. Make light mode default for all pages 
+4. Remove the intelligent alerts as that is already captured in the ‘Oracle briefs’ in Oracle AI Hub. 
+5. Make the ‘Oracle AI’ chat window appropriate and relevant for the chosen customer segment. Show relevant content and respond to the customer queries when they ask. 
+6. The name of the customer should reflect everywhere based on the customer segment selection on the first page. If I ask AI chat window my name, it says ‘Advait’ no matter if I have chose the student profile (Ishan) 
+7. The active atmosphere mode on profile page is currently not working well. Improve it. The theme of the app should reflect the atmosphere mode while still keeping the federal bank design guidelines intact.

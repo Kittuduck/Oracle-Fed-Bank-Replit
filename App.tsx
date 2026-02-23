@@ -38,7 +38,7 @@ const App: React.FC = () => {
     const [selectedPersona, setSelectedPersona] = useState<PersonaProfile | null>(null);
     const [view, setView] = useState<'PERSONA_SELECT' | 'DASHBOARD' | 'PROFILE' | 'GOALS' | 'ORACLE' | 'ORACLE_HUB' | 'AUTOMATION_HUB' | 'PORTFOLIO' | 'EXPENDITURE' | 'ONBOARDING' | 'PAYMENTS' | 'CARDS' | 'SUPPORT' | 'INVESTMENTS' | 'LOANS' | 'CARD_APPLY' | 'NICHE_LOANS' | 'LEGACY_SERVICES'>('PERSONA_SELECT');
     const [payTab, setPayTab] = useState<'SEND' | 'BILL' | 'SCAN'>('SEND');
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
     const [oracleActive, setOracleActive] = useState(true);
     const [festival, setFestival] = useState<'DEFAULT' | 'DIWALI' | 'HOLI'>('DEFAULT');
@@ -321,6 +321,7 @@ const App: React.FC = () => {
                     oracleActive={oracleActive}
                     setOracleActive={setOracleActive}
                     festival={festival}
+                    persona={selectedPersona}
                 />
             );
         }
@@ -403,6 +404,7 @@ const App: React.FC = () => {
                             currentFinancials={currentFinancials}
                             oracleActive={oracleActive}
                             initialPrompt={oraclePrompt}
+                            persona={selectedPersona}
                         />
                     </div>
                 </div>

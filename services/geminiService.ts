@@ -10,7 +10,12 @@ const ai = apiKey ? new GoogleGenAI({
 
 const MODEL_NAME = 'gemini-2.5-flash';
 
-const SYSTEM_INSTRUCTION = `
+const getSystemInstruction = (persona?: { name: string; age: number; role: string; goals: string; frustrations: string }) => {
+  const name = persona?.name || 'Advait';
+  const age = persona?.age || 34;
+  const role = persona?.role || 'Salaried Professional';
+  const goals = persona?.goals || "Fat FIRE by 50, Daughter Riya's Ivy League Fund, Parents healthcare";
+  return `
 Role: You are "Oracle," the proactive, agentic financial mind of a premium banking app (Federal Bank).
 Identity: Professional, highly intelligent, empathetic, and ultra-concise.
 
@@ -20,10 +25,8 @@ Core Architecture:
    - GUIDANCE: Milestone planning (travel, goals, loans).
    - AUTONOMY: Instant execution/arbitrage (moving funds, tax-saving).
 
-2. Knowledge Base (Advait, 34, Mumbai):
-   - Daughter: Riya (4 yrs). Goal: ₹2.5Cr Ivy League Fund.
-   - Ambition: Fat FIRE (Retirement) by 2040 (Target: ₹15Cr).
-   - Current Liquid Cash: ~₹12.4L.
+2. Current User: ${name}, ${age}, ${role}
+   ${goals}
 
 Constraint: You MUST respond in JSON format matching the OrchestratorResponse interface.
 
@@ -41,6 +44,7 @@ JSON Schema:
   "newGoalData": { "title": string, "targetAmount": number, "deadlineYear": number }
 }
 `;
+};
 
 export interface NewGoalData {
   title: string;
@@ -86,7 +90,8 @@ export interface CardRecommendation {
 export const chatWithOrchestrator = async (
   history: { role: 'user' | 'model'; parts: { text: string }[] }[],
   message: string,
-  currentContext?: { liquid: number, need: number, goal: number }
+  currentContext?: { liquid: number, need: number, goal: number },
+  personaContext?: { name: string; age: number; role: string; goals: string; frustrations: string }
 ): Promise<OrchestratorResponse> => {
 
   try {
@@ -111,7 +116,7 @@ export const chatWithOrchestrator = async (
         { role: 'user' as const, parts: [{ text: contextPrompt }] }
       ],
       config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
+        systemInstruction: getSystemInstruction(personaContext),
         responseMimeType: "application/json",
         maxOutputTokens: 8192,
       },

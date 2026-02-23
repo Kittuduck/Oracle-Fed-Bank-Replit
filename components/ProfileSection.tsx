@@ -8,6 +8,8 @@ interface ProfileSectionProps {
     toggleTheme: () => void;
     oracleActive: boolean;
     setOracleActive: (active: boolean) => void;
+    persona?: any;
+    festival?: string;
 }
 
 interface FamilyMember {
@@ -63,7 +65,7 @@ const SettingsItem = ({ icon: Icon, label, value, valueColor = "text-slate-500",
     </div>
 );
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, toggleTheme, oracleActive, setOracleActive }) => {
+const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, toggleTheme, oracleActive, setOracleActive, persona }) => {
     const { theme, setTheme } = useTheme();
     // Family Data State (For Financial Hub)
     const [members, setMembers] = useState<FamilyMember[]>([
@@ -124,16 +126,51 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
     // Governance State
     const [oracleGuardianMode, setOracleGuardianMode] = useState(true);
 
-    // Profile Data State
-    const [employment, setEmployment] = useState({ role: 'Product Lead', company: 'Tech Mahindra Ltd' });
+    const getEmploymentForPersona = (p: any) => {
+        if (!p) return { role: 'Product Lead', company: 'Tech Mahindra Ltd' };
+        switch (p.id) {
+            case 'rajesh': return { role: 'Business Owner', company: '₹4Cr Textile Export Business' };
+            case 'ishan': return { role: 'Engineering Student', company: 'IIT' };
+            case 'kapoor': return { role: 'Retired Bank Manager', company: 'Federal Bank (Retired)' };
+            case 'anjali': return { role: 'Homemaker', company: 'Household Management' };
+            default: return { role: 'Product Lead', company: 'Tech Mahindra Ltd' };
+        }
+    };
 
-    // Detailed Dependents List State
-    const [dependentsList, setDependentsList] = useState<Dependent[]>([
-        { id: 'd1', name: 'Priya', relation: 'Wife' },
-        { id: 'd2', name: 'Riya', relation: 'Daughter' },
-        { id: 'd3', name: 'Rajesh', relation: 'Father' },
-        { id: 'd4', name: 'Sunita', relation: 'Mother' },
-    ]);
+    const getDependentsForPersona = (p: any): Dependent[] => {
+        if (!p) return [
+            { id: 'd1', name: 'Priya', relation: 'Wife' },
+            { id: 'd2', name: 'Riya', relation: 'Daughter' },
+            { id: 'd3', name: 'Rajesh', relation: 'Father' },
+            { id: 'd4', name: 'Sunita', relation: 'Mother' },
+        ];
+        switch (p.id) {
+            case 'rajesh': return [
+                { id: 'd1', name: 'Meena', relation: 'Wife' },
+                { id: 'd2', name: 'Vikram', relation: 'Son' },
+            ];
+            case 'ishan': return [];
+            case 'kapoor': return [
+                { id: 'd1', name: 'Aryan', relation: 'Grandson' },
+                { id: 'd2', name: 'Sunita', relation: 'Wife' },
+            ];
+            case 'anjali': return [
+                { id: 'd1', name: 'Meera', relation: 'Daughter' },
+                { id: 'd2', name: 'Arjun', relation: 'Son' },
+                { id: 'd3', name: 'Vikram', relation: 'Husband' },
+            ];
+            default: return [
+                { id: 'd1', name: 'Priya', relation: 'Wife' },
+                { id: 'd2', name: 'Riya', relation: 'Daughter' },
+                { id: 'd3', name: 'Rajesh', relation: 'Father' },
+                { id: 'd4', name: 'Sunita', relation: 'Mother' },
+            ];
+        }
+    };
+
+    const [employment, setEmployment] = useState(getEmploymentForPersona(persona));
+
+    const [dependentsList, setDependentsList] = useState<Dependent[]>(getDependentsForPersona(persona));
 
     // Individual Edit States
     const [editingEmployment, setEditingEmployment] = useState(false);
@@ -295,7 +332,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                     <div className="relative group">
                         <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-federalblue-900 to-federalblue-700 p-[2px] mb-4">
                             <div className="w-full h-full rounded-full bg-white dark:bg-[#15161a] flex items-center justify-center text-2xl font-bold text-federalblue-900 dark:text-white relative overflow-hidden transition-colors">
-                                <span className="z-10">AD</span>
+                                <span className="z-10">{persona?.avatar || 'AD'}</span>
                             </div>
                         </div>
                         <div className="absolute bottom-4 right-0 bg-white dark:bg-[#0b0c10] rounded-full p-1.5 border border-[#E0E0E0] dark:border-slate-800 cursor-pointer hover:border-federalblue-500 transition-colors">
@@ -305,10 +342,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                         </div>
                     </div>
 
-                    <h2 className="text-xl font-medium text-[#333333] dark:text-white">Advait</h2>
+                    <h2 className="text-xl font-medium text-[#333333] dark:text-white">{persona?.name || 'Advait'}</h2>
                     <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
                         <Mail className="w-3 h-3" />
-                        <span>advait.tech@example.com</span>
+                        <span>{persona?.name?.toLowerCase() || 'advait'}.user@example.com</span>
                     </div>
 
                     <div className="mt-5 flex gap-3">
@@ -371,21 +408,25 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             {[
-                                { id: 'DEFAULT', name: 'Federal Standard', color: 'bg-[#004d9c]' },
-                                { id: 'DIWALI', name: 'Diwali Festival', color: 'bg-[#800020]' },
-                                { id: 'ONAM', name: 'Harvest Onam', color: 'bg-[#1b4d3e]' },
-                                { id: 'NEW_YEAR', name: 'Premium New Year', color: 'bg-[#000080]' }
+                                { id: 'DEFAULT', name: 'Federal Standard', color: '#004d9c', gradientFrom: '#004d9c', gradientTo: '#001d3d' },
+                                { id: 'DIWALI', name: 'Diwali Festival', color: '#800020', gradientFrom: '#800020', gradientTo: '#4a0012' },
+                                { id: 'ONAM', name: 'Harvest Onam', color: '#1b4d3e', gradientFrom: '#1b4d3e', gradientTo: '#0d2920' },
+                                { id: 'NEW_YEAR', name: 'Premium New Year', color: '#000080', gradientFrom: '#000080', gradientTo: '#000040' }
                             ].map((t) => (
                                 <div
                                     key={t.id}
                                     onClick={() => setTheme(t.id as any)}
-                                    className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col gap-2 ${theme === t.id
-                                        ? 'border-federalblue-500 bg-federalblue-50/30 dark:bg-federalblue-900/10'
+                                    className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex flex-col gap-2 ${theme === t.id
+                                        ? 'shadow-md'
                                         : 'border-[#E0E0E0] dark:border-slate-800 hover:border-slate-300'
                                         }`}
+                                    style={theme === t.id ? { borderColor: t.color, backgroundColor: `${t.color}08` } : {}}
                                 >
-                                    <div className={`w-full h-1.5 rounded-full ${t.color}`}></div>
-                                    <span className={`text-[10px] font-bold ${theme === t.id ? 'text-federalblue-900 dark:text-federalblue-400' : 'text-slate-500'}`}>{t.name}</span>
+                                    <div className="w-full h-3 rounded-lg" style={{ background: `linear-gradient(to right, ${t.gradientFrom}, ${t.gradientTo})` }}></div>
+                                    <span className={`text-[10px] font-bold`} style={theme === t.id ? { color: t.color } : { color: '#94a3b8' }}>{t.name}</span>
+                                    {theme === t.id && (
+                                        <span className="text-[8px] font-bold uppercase tracking-widest" style={{ color: t.color, opacity: 0.7 }}>Active</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -412,7 +453,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                                 <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                                     <Briefcase className="w-5 h-5" strokeWidth={1.5} />
                                 </div>
-                                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Employment</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Occupation</p>
                             </div>
                             {!editingEmployment && (
                                 <button onClick={() => { setTempEmployment(employment); setEditingEmployment(true); }} className="text-slate-400 hover:text-federalblue-900 transition-colors p-1">

@@ -158,37 +158,6 @@ const OracleBriefHub: React.FC<OracleBriefHubProps> = ({ isDarkMode, festival, o
                     </div>
                 </div >
 
-                {/* --- Proactive Alerts Flow --- */}
-                < div className="space-y-4" >
-                    <h3 className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em] ml-2">Intelligent Alerts</h3>
-                    <div className="space-y-3">
-                        <BriefingItem
-                            icon={Zap}
-                            color="emerald"
-                            title="Windfall Efficiency"
-                            subtitle="Allocating ₹15L now reduces FIRE age by 2.4 years."
-                            action="Execute Split"
-                            onAction={() => onAction('Windfall Allocation')}
-                        />
-                        <BriefingItem
-                            icon={Calendar}
-                            color="federalblue"
-                            title="Subscription Hike"
-                            subtitle="Amazon Prime renewing at +₹500. Optimize?"
-                            action="Review Plan"
-                            onAction={() => onAction('Review Plan')}
-                        />
-                        <BriefingItem
-                            icon={Target}
-                            color="federalgold"
-                            title="Goal Milestone"
-                            subtitle="Riya's Education Fund is 12% ahead of schedule."
-                            action="View Progress"
-                            onAction={() => onAction('Track Goals')}
-                        />
-                    </div>
-                </div >
-
                 {/* --- AI Subscription Manager --- */}
                 < div className="space-y-4" >
                     <div className="flex justify-between items-end px-2">

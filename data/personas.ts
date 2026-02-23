@@ -81,6 +81,61 @@ export interface DiscoverCard {
 
 export const PERSONAS: PersonaProfile[] = [
   {
+    id: 'advait',
+    name: 'Advait',
+    age: 34,
+    role: 'Salaried Professional',
+    vibe: 'Busy & Organized',
+    avatar: 'A',
+    tagline: 'Agile Orchestrator',
+    description: 'The "Agile Orchestrator" balancing multi-generational support with "Fat FIRE" goals. Needs an autonomous Oracle.',
+    accentColor: '#1e3a5f',
+    features: [
+      { title: 'Fat FIRE Planner', description: 'Track and optimize path to Financial Independence by 50.', icon: 'TrendingUp' },
+      { title: 'Family Shield', description: 'World-class healthcare management for parents. Auto-fund medical reserves.', icon: 'ShieldCheck' },
+      { title: 'Smart Automation', description: 'Auto-move funds between goals, medical, and savings. Zero manual banking.', icon: 'Zap' },
+    ],
+    financials: {
+      liquid: 1240500,
+      totalBalance: 42000000,
+      monthlyIncome: 425000,
+      monthlySpend: 135000,
+      safeToSpend: 290000,
+      accountLabel: 'Federal Premium Savings',
+      accountNumber: '**** 8842',
+      changePercent: 4.8,
+    },
+    goals: [
+      { id: 'adg1', title: 'Fat FIRE (Retirement by 50)', currentAmount: 42000000, targetAmount: 150000000, deadlineYear: 2040, status: 'ON_TRACK', monthlyContribution: 250000, description: 'Early retirement corpus to maintain current lifestyle adjusted for inflation.', insights: ['Current equity allocation is optimal.', 'Projected to hit target 14 months early.'] },
+      { id: 'adg2', title: "Riya's Ivy League Fund", currentAmount: 5800000, targetAmount: 25000000, deadlineYear: 2040, status: 'ON_TRACK', monthlyContribution: 50000, description: 'Education corpus for daughter Riya (4 yrs) for international education.', insights: ['12% ahead of schedule.', 'Consider increasing SIP after bonus.'] },
+      { id: 'adg3', title: 'Parents Healthcare Fund', currentAmount: 1200000, targetAmount: 3000000, deadlineYear: 2028, status: 'AT_RISK', monthlyContribution: 30000, description: 'Medical emergency and premium healthcare for parents.', insights: ['Medical inflation at 14%.', 'Add critical illness rider.'] },
+    ],
+    billers: [
+      { id: 'adb1', name: 'Infinite Black Card', amount: 145000, type: 'DUE', dueDate: '3 days', category: 'Finance' },
+      { id: 'adb2', name: 'Adani Electricity', amount: 4250, type: 'DUE', dueDate: '4 days', category: 'Utilities' },
+      { id: 'adb3', name: 'Netflix Premium', amount: 649, type: 'AUTO', status: 'ACTIVE', dueDate: '5th of month', category: 'Entertainment' },
+      { id: 'adb4', name: 'Amazon Prime', amount: 1499, type: 'AUTO', status: 'ACTIVE', dueDate: '12th of month', category: 'Entertainment' },
+      { id: 'adb5', name: 'Parents Medical Insurance', amount: 12500, type: 'AUTO', status: 'ACTIVE', dueDate: '1st of month', category: 'Health' },
+    ],
+    oracleBriefs: [
+      { id: 'adob1', title: 'FIRE Milestone Ahead', summary: 'Your retirement corpus crossed ₹4.2Cr. At current rate, you will hit Fat FIRE 14 months early by 2039.', type: 'insight', actionLabel: 'View Projection' },
+      { id: 'adob2', title: 'Parent Health Alert', summary: "Father's prescription costs rose 22% this quarter. Consider switching to Federal Health Plus plan.", type: 'protection', actionLabel: 'Compare Plans' },
+      { id: 'adob3', title: 'Smart Fund Move', summary: 'Surplus ₹1.8L detected. Auto-routing: ₹1L to FIRE, ₹50k to Riya Fund, ₹30k to Medical.', type: 'opportunity', actionLabel: 'Approve Split' },
+      { id: 'adob4', title: 'Tax Optimization', summary: 'Claiming 80C + 80D + NPS can save ₹2.1L in taxes this FY. Action needed before March 31.', type: 'alert', actionLabel: 'Optimize Now' },
+    ],
+    quickActions: [
+      { label: 'Send', icon: 'Send', color: '#1e3a5f' },
+      { label: 'UPI', icon: 'Smartphone', color: '#059669' },
+      { label: 'Scan', icon: 'Smartphone', color: '#333333' },
+      { label: 'Invest', icon: 'TrendingUp', color: '#f37021' },
+    ],
+    discoverCards: [
+      { title: 'Fat FIRE Dashboard', subtitle: 'Track your path to early retirement.', color: 'from-blue-700 to-indigo-900', tag: 'FIRE' },
+      { title: 'Family Shield', subtitle: 'Healthcare & legacy for 3 generations.', color: 'from-emerald-600 to-teal-900' },
+      { title: 'Auto-Pilot Banking', subtitle: 'Zero manual tasks. Oracle handles it all.', color: 'from-orange-500 to-red-700', tag: 'SMART' },
+    ],
+  },
+  {
     id: 'rajesh',
     name: 'Rajesh',
     age: 45,
