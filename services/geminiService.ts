@@ -3,7 +3,7 @@ import { TradeOffAnalysis } from "../types";
 
 const apiKey = (process.env as any).AI_INTEGRATIONS_GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
 
-const isReplit = typeof window !== 'undefined' && (window.location.hostname.includes('replit') || window.location.hostname.includes('repl.co'));
+const isReplit = typeof window !== 'undefined' && (window.location.hostname.endsWith('.replit.dev') || window.location.hostname.endsWith('.repl.co') || window.location.hostname.endsWith('.replit.app'));
 
 const ai = isReplit && apiKey ? new GoogleGenAI({
   apiKey,
