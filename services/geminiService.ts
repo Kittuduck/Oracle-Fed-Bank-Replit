@@ -2,11 +2,10 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { TradeOffAnalysis } from "../types";
 
 const apiKey = (process.env as any).AI_INTEGRATIONS_GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
-const baseUrl = (process.env as any).AI_INTEGRATIONS_GEMINI_BASE_URL || '';
 
 const ai = apiKey ? new GoogleGenAI({
   apiKey,
-  ...(baseUrl ? { httpOptions: { apiVersion: "", baseUrl } } : {}),
+  httpOptions: { apiVersion: "", baseUrl: window.location.origin + '/gemini-proxy' },
 }) : null;
 
 const MODEL_NAME = 'gemini-2.5-flash';
