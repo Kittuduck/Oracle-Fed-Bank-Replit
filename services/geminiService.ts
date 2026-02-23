@@ -10,7 +10,7 @@ const ai = apiKey ? new GoogleGenAI({
   ...(isReplit ? { httpOptions: { apiVersion: "", baseUrl: window.location.origin + '/gemini-proxy' } } : {}),
 }) : null;
 
-const MODEL_NAME = 'gemini-2.5-flash-lite';
+const MODEL_NAME = 'gemini-2.5-flash';
 
 const getSystemInstruction = (persona?: { name: string; age: number; role: string; goals: string; frustrations: string }) => {
   const name = persona?.name || 'Advait';
