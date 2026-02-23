@@ -220,7 +220,7 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                             <Sparkles className="w-4 h-4 text-federalgold-500 animate-pulse" />
                             <span className="text-sm font-medium text-slate-500 dark:text-zinc-500">Ask Oracle anything...</span>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-federalblue-900 to-federalblue-700 flex items-center justify-center shadow-md">
+                        <div className="w-10 h-10 rounded-full bg-federalblue-900 flex items-center justify-center shadow-md">
                             <ArrowRight className="w-4 h-4 text-white" />
                         </div>
                     </div>
@@ -253,8 +253,8 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                                     onClick={action.onClick}
                                     className="flex-1 group py-3 px-1 rounded-[1.25rem] hover:bg-white/40 dark:hover:bg-white/10 transition-all duration-300 flex flex-col items-center justify-center gap-1.5 active:scale-95 text-center"
                                 >
-                                    <div className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`} style={{ backgroundColor: persona ? persona.accentColor : '#004d9c' }}>
-                                        <action.icon className="w-5 h-5" strokeWidth={2.5} />
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`} style={{ backgroundColor: persona ? `${persona.accentColor}15` : 'rgba(0, 77, 156, 0.08)' }}>
+                                        <action.icon className="w-5 h-5" strokeWidth={2} style={{ color: persona ? persona.accentColor : '#004d9c' }} />
                                     </div>
                                     <span className="text-[10px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">{action.label}</span>
                                 </button>
@@ -297,8 +297,8 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 {persona && persona.oracleBriefs.length > 0 && (
                     <div className="space-y-4 pt-2">
                         <div className="flex items-center gap-3 px-1">
-                            <div className="w-8 h-8 rounded-full bg-federalgold-500 flex items-center justify-center text-white shadow-oracle">
-                                <Sparkles className="w-4 h-4" />
+                            <div className="w-8 h-8 rounded-2xl bg-federalgold-50 flex items-center justify-center">
+                                <Sparkles className="w-4 h-4 text-federalgold-500" />
                             </div>
                             <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none">Oracle Daily Brief</h3>
                         </div>
@@ -371,8 +371,8 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 {!persona && (
                 <div className="pt-6 animate-fade-in relative">
                     <div className="flex items-center gap-3 px-1 mb-6">
-                        <div className="w-8 h-8 rounded-full bg-federalgold-500 flex items-center justify-center text-white shadow-oracle">
-                            <Sparkles className="w-4 h-4" />
+                        <div className="w-8 h-8 rounded-2xl bg-federalgold-50 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-federalgold-500" />
                         </div>
                         <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none">Curated for You</h3>
                     </div>
