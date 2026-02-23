@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, ArrowRight, Shield, Zap, Compass, AlertTriangle, TrendingUp, Calendar, CheckCircle2, Sparkles, X, FileUp, Loader2, Check, FileCheck, File, Mic } from 'lucide-react';
+import { Send, Bot, User, ArrowRight, Shield, Zap, Compass, AlertTriangle, TrendingUp, Calendar, CheckCircle2, Sparkles, X, FileUp, Loader2, Check, FileCheck, File, Mic, Volume2 } from 'lucide-react';
 import { chatWithOrchestrator, SimulationUpdateData, NewGoalData } from '../services/geminiService';
 import TradeOffVisualizer from './TradeOffVisualizer';
 
@@ -27,6 +27,36 @@ interface Message {
     simulation?: SimulationUpdateData;
 }
 
+const briefTypeToIcon = (type: string) => {
+    switch (type) {
+        case 'protection': return AlertTriangle;
+        case 'alert': return Zap;
+        case 'opportunity': return TrendingUp;
+        case 'insight': return Compass;
+        default: return Sparkles;
+    }
+};
+
+const briefTypeToColor = (type: string) => {
+    switch (type) {
+        case 'protection': return 'federalgold';
+        case 'alert': return 'emerald';
+        case 'opportunity': return 'federalblue';
+        case 'insight': return 'federalblue';
+        default: return 'federalblue';
+    }
+};
+
+const briefTypeToState = (type: string): 'PROTECTION' | 'GUIDANCE' | 'AUTONOMY' => {
+    switch (type) {
+        case 'protection': return 'PROTECTION';
+        case 'alert': return 'PROTECTION';
+        case 'opportunity': return 'AUTONOMY';
+        case 'insight': return 'GUIDANCE';
+        default: return 'GUIDANCE';
+    }
+};
+
 const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     onUpdateSimulation,
     onAddGoal,
@@ -41,8 +71,9 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
 }) => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef<any>(null);
 
-    // Upload Modal State
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [uploadStatus, setUploadStatus] = useState<'IDLE' | 'UPLOADING' | 'SUCCESS'>('IDLE');
     const [uploadSlot, setUploadSlot] = useState<number | null>(null);
@@ -74,10 +105,9 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         }, 2500);
     };
 
-    // Content for the Windfall Logic
     const renderWindfallOptions = () => (
         <div className="space-y-4 animate-fade-in">
-            <p>You’ve received a ₹15L windfall. There are three strong ways to use this, depending on your priority right now:</p>
+            <p>You've received a ₹15L windfall. There are three strong ways to use this, depending on your priority right now:</p>
 
             <div className="space-y-3">
                 <div className="p-3 bg-white/80 dark:bg-white/5 rounded-lg border border-[#E0E0E0] dark:border-slate-700/50 opacity-80">
@@ -111,29 +141,75 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         </div>
     );
 
-    const [messages, setMessages] = useState<Message[]>([
-        {
+    const buildInitialMessage = (): Message => {
+        const briefs = persona?.oracleBriefs || [];
+        const personaName = persona?.name || 'User';
+        const primaryState = briefs.length > 0 ? briefTypeToState(briefs[0].type) : 'PROTECTION';
+
+        const actions = briefs.length > 0
+            ? briefs.slice(0, 3).map((b: any) => b.actionLabel || b.title)
+            : ['Review Anomaly', 'Pay Credit Card Bill', 'Track Goals'];
+
+        const allActions = [...actions, 'Track Goals', 'Review Portfolio'].filter((v, i, a) => a.indexOf(v) === i).slice(0, 5);
+
+        return {
             id: 'init',
             role: 'model',
-            state: 'PROTECTION',
+            state: primaryState,
             text: "Daily Financial Brief",
             content: (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <p className="font-medium text-slate-900 dark:text-white">Daily Financial Brief</p>
+                        <div>
+                            <p className="font-medium text-slate-900 dark:text-white">Good Morning, {personaName}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5">Your Daily Financial Brief</p>
+                        </div>
                         <span className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase">Today, 9:00 AM</span>
                     </div>
                     <div className="space-y-0.5">
-                        <BriefingItem icon={AlertTriangle} color="federalgold" title="Anomaly Detected" subtitle="Unusual transaction at Club Aqua, London." pulse />
-                        <BriefingItem icon={Zap} color="emerald" title="Windfall Detected" subtitle="ESOP sales credited. Allocation pending." />
-                        <BriefingItem icon={Calendar} color="federalblue" title="Credit Card Bill Due" subtitle="Due in 3 days. Balance: ₹1.2L" />
+                        {briefs.length > 0 ? briefs.slice(0, 3).map((brief: any, idx: number) => {
+                            const Icon = briefTypeToIcon(brief.type);
+                            const color = briefTypeToColor(brief.type);
+                            return (
+                                <BriefingItem
+                                    key={brief.id || idx}
+                                    icon={Icon}
+                                    color={color}
+                                    title={brief.title}
+                                    subtitle={brief.summary.length > 80 ? brief.summary.substring(0, 80) + '...' : brief.summary}
+                                    pulse={idx === 0}
+                                />
+                            );
+                        }) : (
+                            <>
+                                <BriefingItem icon={AlertTriangle} color="federalgold" title="Anomaly Detected" subtitle="Unusual transaction at Club Aqua, London." pulse />
+                                <BriefingItem icon={Zap} color="emerald" title="Windfall Detected" subtitle="ESOP sales credited. Allocation pending." />
+                                <BriefingItem icon={Calendar} color="federalblue" title="Credit Card Bill Due" subtitle="Due in 3 days. Balance: ₹1.2L" />
+                            </>
+                        )}
                     </div>
                     <p className="text-xs text-slate-500 pt-2 border-t border-[#E0E0E0] dark:border-slate-800">Select a priority to analyze:</p>
                 </div>
             ),
-            actions: ['Review Anomaly', 'Pay Credit Card Bill', 'Windfall Allocation', 'Track Goals', 'Review Portfolio']
-        }
-    ]);
+            actions: allActions
+        };
+    };
+
+    const [messages, setMessages] = useState<Message[]>([buildInitialMessage()]);
+
+    useEffect(() => {
+        setMessages([buildInitialMessage()]);
+        processedPromptRef.current = false;
+    }, [persona?.id]);
+
+    useEffect(() => {
+        return () => {
+            if (recognitionRef.current) {
+                recognitionRef.current.stop();
+                recognitionRef.current = null;
+            }
+        };
+    }, []);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -152,6 +228,66 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         }
     }, [initialPrompt, messages.length]);
 
+    const startVoiceInput = () => {
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert('Voice input is not supported in this browser. Please use Chrome or Edge.');
+            return;
+        }
+
+        if (recognitionRef.current) {
+            recognitionRef.current.stop();
+            recognitionRef.current = null;
+            setIsListening(false);
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-IN';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+        recognitionRef.current = recognition;
+
+        recognition.onstart = () => {
+            setIsListening(true);
+        };
+
+        recognition.onresult = (event: any) => {
+            let finalTranscript = '';
+            let interimTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript;
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            if (finalTranscript) {
+                setInput(finalTranscript);
+                setTimeout(() => handleSend(finalTranscript), 300);
+            } else {
+                setInput(interimTranscript);
+            }
+        };
+
+        recognition.onerror = (event: any) => {
+            console.error('Speech recognition error:', event.error);
+            setIsListening(false);
+            if (event.error === 'not-allowed') {
+                alert('Microphone access was denied. Please allow microphone permissions in your browser settings.');
+            }
+        };
+
+        recognition.onend = () => {
+            setIsListening(false);
+            recognitionRef.current = null;
+        };
+
+        recognition.start();
+    };
+
     const handleSend = async (text: string = input) => {
         if (!text.trim()) return;
 
@@ -166,7 +302,6 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         if (text === "Review Portfolio") { onNavigateToPortfolio(); return; }
         if (text === "Review Expenditure" || text === "Review Anomaly") { onNavigateToExpenditure(); return; }
 
-        // Windfall Interceptor
         if (text === "Windfall Allocation") {
             const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text, text };
             setMessages(prev => [...prev, userMsg]);
@@ -207,7 +342,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                 id: aiMsgId,
                 role: 'model',
                 text: response.textResponse,
-                content: null, // Will be set after streaming
+                content: null,
                 state: response.state,
                 actions: response.suggestedActions,
                 simulation: response.simulationUpdate
@@ -216,7 +351,6 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
             setMessages(prev => [...prev, aiMsg]);
             setStreamingMessageId(aiMsgId);
 
-            // Simulate streaming
             let currentText = "";
             const fullText = response.textResponse;
             const speechMarks = fullText.split(' ');
@@ -237,11 +371,6 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleVoiceInput = () => {
-        // Placeholder for voice interaction
-        console.log("Voice input triggered");
     };
 
     return (
@@ -302,35 +431,50 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
             </div>
 
             <div className="shrink-0 p-4 bg-white dark:bg-[#15161a] border-t border-[#E0E0E0] dark:border-slate-800 sticky bottom-0 z-10">
-                <div className="relative flex items-center">
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && handleSend()}
-                        placeholder="Talk to Oracle.."
-                        className="w-full bg-[#F6F6F6] dark:bg-[#0b0c10] border border-[#E0E0E0] dark:border-slate-800 rounded-lg pl-4 pr-24 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-federalblue-900 text-[#333333] dark:text-white transition-all"
-                    />
-                    <div className="absolute right-2 flex items-center gap-1">
-                        <button
-                            onClick={handleVoiceInput}
-                            className="p-1.5 text-slate-400 hover:text-federalblue-900 transition-colors"
-                            title="Voice search"
-                        >
-                            <Mic className="w-4 h-4" />
-                        </button>
-                        <button
-                            onClick={() => handleSend()}
-                            disabled={!input.trim() || loading}
-                            className="p-1.5 bg-federalblue-900 dark:bg-white text-white dark:text-black rounded-md hover:opacity-90 disabled:opacity-50 shadow-sm transition-all"
-                        >
-                            <Send className="w-4 h-4" />
-                        </button>
+                <div className="relative flex items-center gap-2">
+                    <button
+                        onClick={startVoiceInput}
+                        className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all shrink-0 border ${
+                            isListening
+                                ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 animate-pulse'
+                                : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:text-federalblue-900 dark:hover:text-white hover:border-federalblue-300 dark:hover:border-federalblue-700'
+                        }`}
+                        title={isListening ? "Stop listening" : "Speak to Oracle"}
+                    >
+                        {isListening ? (
+                            <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                                <span>Listening...</span>
+                            </div>
+                        ) : (
+                            <>
+                                <Volume2 className="w-4 h-4" />
+                                <span>Speak</span>
+                            </>
+                        )}
+                    </button>
+                    <div className="relative flex-1 flex items-center">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
+                            onKeyDown={e => e.key === 'Enter' && handleSend()}
+                            placeholder="Talk to Oracle.."
+                            className="w-full bg-[#F6F6F6] dark:bg-[#0b0c10] border border-[#E0E0E0] dark:border-slate-800 rounded-lg pl-4 pr-12 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-federalblue-900 text-[#333333] dark:text-white transition-all"
+                        />
+                        <div className="absolute right-2 flex items-center">
+                            <button
+                                onClick={() => handleSend()}
+                                disabled={!input.trim() || loading}
+                                className="p-1.5 bg-federalblue-900 dark:bg-white text-white dark:text-black rounded-md hover:opacity-90 disabled:opacity-50 shadow-sm transition-all"
+                            >
+                                <Send className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* MULTI-FILE UPLOAD MODAL */}
             {isUploadModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
                     <div className="bg-white dark:bg-[#1c1e24] w-full max-w-sm rounded-xl shadow-federal-lg overflow-hidden border border-[#E0E0E0] dark:border-slate-800">
@@ -414,7 +558,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                                         <Check className="w-8 h-8" />
                                     </div>
                                     <h4 className="text-lg font-bold text-[#333333] dark:text-white">Analysis Ready</h4>
-                                    <p className="text-xs text-slate-500 mt-2">Checking travel impact on FIRE timeline.</p>
+                                    <p className="text-xs text-slate-500 mt-1">Oracle has processed your documents.</p>
                                 </div>
                             )}
                         </div>
@@ -463,7 +607,6 @@ const getStateIcon = (state?: string) => {
 };
 
 const BriefingItem = ({ icon: Icon, color, title, subtitle, pulse }: any) => {
-    // Map colors to classes manually to ensure Tailwind picks them up
     let bgClass = 'bg-slate-100';
     let textClass = 'text-slate-600';
 

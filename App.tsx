@@ -203,6 +203,8 @@ const App: React.FC = () => {
                 <PersonaSelector
                     personas={PERSONAS}
                     onSelect={handlePersonaSelect}
+                    isDarkMode={isDarkMode}
+                    toggleTheme={toggleTheme}
                 />
             );
         }

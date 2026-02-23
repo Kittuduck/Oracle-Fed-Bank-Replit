@@ -65,49 +65,40 @@ const SettingsItem = ({ icon: Icon, label, value, valueColor = "text-slate-500",
     </div>
 );
 
+const getMembersForPersona = (p: any): FamilyMember[] => {
+    if (!p || p.id === 'advait') return [
+        { id: 'PR', name: 'Priya', role: 'Spouse', initials: 'PR', colorClass: 'bg-federalblue-50 dark:bg-federalblue-900/20 text-federalblue-900 dark:text-federalblue-400', accessLabel: 'Investments', isLocked: true, permission: 'VIEW_ONLY', features: ['View Portfolio', 'View Goals'], spendLimit: 50000 },
+        { id: 'RJ', name: 'Rajesh', role: 'Father', initials: 'RJ', colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400', accessLabel: 'Legacy Vault', walletBalance: 15000, spendLimit: 20000, permission: 'WALLET_ONLY', features: ['Wallet Access', 'Utility Payments'], legacyAlert: 'Nomination Missing', policyStatus: 'Medical Policy Expires in 12d' },
+        { id: 'SU', name: 'Sunita', role: 'Mother', initials: 'SU', colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400', accessLabel: 'Wallet', walletBalance: 8500, spendLimit: 10000, permission: 'WALLET_ONLY', features: ['Wallet Access'] },
+    ];
+    switch (p.id) {
+        case 'rajesh': return [
+            { id: 'MN', name: 'Meena', role: 'Spouse', initials: 'MN', colorClass: 'bg-federalblue-50 dark:bg-federalblue-900/20 text-federalblue-900 dark:text-federalblue-400', accessLabel: 'Business Accounts', isLocked: true, permission: 'VIEW_ONLY', features: ['View Accounts', 'Transaction History'], spendLimit: 100000 },
+            { id: 'VK', name: 'Vikram', role: 'Son', initials: 'VK', colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400', accessLabel: 'Wallet', walletBalance: 25000, spendLimit: 30000, permission: 'WALLET_ONLY', features: ['Wallet Access', 'UPI Payments'] },
+        ];
+        case 'ishan': return [
+            { id: 'RM', name: 'Roommate Split', role: 'Shared', initials: 'RS', colorClass: 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400', accessLabel: 'Bill Splitting', permission: 'SPEND_ONLY', features: ['Split Bills', 'Shared Expenses'], spendLimit: 5000 },
+        ];
+        case 'kapoor': return [
+            { id: 'SN', name: 'Sunita', role: 'Spouse', initials: 'SN', colorClass: 'bg-federalblue-50 dark:bg-federalblue-900/20 text-federalblue-900 dark:text-federalblue-400', accessLabel: 'Joint Account', isLocked: false, permission: 'FULL_ACCESS', features: ['Full Access', 'Pension View'], spendLimit: 80000 },
+            { id: 'AR', name: 'Aryan', role: 'Grandson', initials: 'AR', colorClass: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400', accessLabel: 'Education Wallet', walletBalance: 5000, spendLimit: 8000, permission: 'WALLET_ONLY', features: ['Wallet Access'] },
+        ];
+        case 'anjali': return [
+            { id: 'VH', name: 'Vikram', role: 'Husband', initials: 'VH', colorClass: 'bg-federalblue-50 dark:bg-federalblue-900/20 text-federalblue-900 dark:text-federalblue-400', accessLabel: 'Primary Account', isLocked: false, permission: 'FULL_ACCESS', features: ['Full Access', 'Investment View'], spendLimit: 200000 },
+            { id: 'MR', name: 'Meera', role: 'Daughter', initials: 'MR', colorClass: 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400', accessLabel: 'Savings Wallet', walletBalance: 3000, spendLimit: 5000, permission: 'WALLET_ONLY', features: ['Wallet Access'] },
+            { id: 'AJ', name: 'Arjun', role: 'Son', initials: 'AJ', colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400', accessLabel: 'Savings Wallet', walletBalance: 2500, spendLimit: 4000, permission: 'WALLET_ONLY', features: ['Wallet Access'] },
+        ];
+        default: return [];
+    }
+};
+
 const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, toggleTheme, oracleActive, setOracleActive, persona }) => {
     const { theme, setTheme } = useTheme();
-    // Family Data State (For Financial Hub)
-    const [members, setMembers] = useState<FamilyMember[]>([
-        {
-            id: 'PR',
-            name: 'Priya',
-            role: 'Spouse',
-            initials: 'PR',
-            colorClass: 'bg-federalblue-50 dark:bg-federalblue-900/20 text-federalblue-900 dark:text-federalblue-400',
-            accessLabel: 'Investments',
-            isLocked: true,
-            permission: 'VIEW_ONLY',
-            features: ['View Portfolio', 'View Goals'],
-            spendLimit: 50000
-        },
-        {
-            id: 'RJ',
-            name: 'Rajesh',
-            role: 'Father',
-            initials: 'RJ',
-            colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400',
-            accessLabel: 'Legacy Vault',
-            walletBalance: 15000,
-            spendLimit: 20000,
-            permission: 'WALLET_ONLY',
-            features: ['Wallet Access', 'Utility Payments'],
-            legacyAlert: 'Nomination Missing',
-            policyStatus: 'Medical Policy Expires in 12d'
-        },
-        {
-            id: 'SU',
-            name: 'Sunita',
-            role: 'Mother',
-            initials: 'SU',
-            colorClass: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400',
-            accessLabel: 'Wallet',
-            walletBalance: 8500,
-            spendLimit: 10000,
-            permission: 'WALLET_ONLY',
-            features: ['Wallet Access']
-        },
-    ]);
+    const [members, setMembers] = useState<FamilyMember[]>(getMembersForPersona(persona));
+
+    React.useEffect(() => {
+        setMembers(getMembersForPersona(persona));
+    }, [persona?.id]);
 
     // UI State
     const [activeModal, setActiveModal] = useState<'NONE' | 'TOPUP' | 'MANAGE'>('NONE');
