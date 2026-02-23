@@ -4,6 +4,7 @@
 A premium, AI-first multi-persona banking application for Federal Bank called "Oracle." Built with React, Vite, TypeScript, and Tailwind CSS. Features a Cred-style UI with light mode default, persona-based dynamic dashboards, and Oracle AI intelligence.
 
 ## Recent Changes
+- 2026-02-23: PersonaSelector light mode default with dark/light toggle. Financial Hub persona-aware family members. Oracle AI Daily Brief dynamic from persona.oracleBriefs. Voice input via Web Speech API (en-IN locale, Speak button). Added useEffect syncs for persona changes and speech recognition cleanup.
 - 2026-02-23: Added Advait (34, Salaried Professional) as 5th persona at top of selector. Switched to light mode default. Made Profile page persona-aware (name, email, occupation, dependents). Made Oracle AI chat persona-aware with dynamic system instructions. Removed duplicate Intelligent Alerts from OracleBriefHub. Added atmosphere theme CSS variables for Diwali/Onam/New Year themes.
 - 2026-02-23: Added multi-persona experience with 4 personas (Rajesh, Ishan, Mr. Kapoor, Anjali), each with tailored financial data, goals, billers, Oracle briefs, discover cards, and features. PersonaSelector entry screen, global reset button (circle icon).
 - 2026-02-23: Initial setup - moved files from zip subfolder to root, installed Node.js 20, configured Vite to run on port 5000 with allowedHosts enabled.
