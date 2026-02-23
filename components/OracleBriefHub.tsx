@@ -16,15 +16,17 @@ import {
     ArrowUpRight
 } from 'lucide-react';
 import PredictiveChart from './PredictiveChart';
+import { PersonaProfile } from '../data/personas';
 
 interface OracleBriefHubProps {
     isDarkMode: boolean;
     festival: 'DEFAULT' | 'DIWALI' | 'HOLI';
     onAction: (action: string) => void;
     currentFinancials: { liquid: number, need: number, goal: number };
+    persona?: PersonaProfile | null;
 }
 
-const OracleBriefHub: React.FC<OracleBriefHubProps> = ({ isDarkMode, festival, onAction, currentFinancials }) => {
+const OracleBriefHub: React.FC<OracleBriefHubProps> = ({ isDarkMode, festival, onAction, currentFinancials, persona }) => {
     return (
         <div className={`flex flex-col h-full bg-white dark:bg-[#0b0c10] transition-all duration-700 ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''}`}>
             <div className="p-6 space-y-8 overflow-y-auto">
@@ -39,10 +41,58 @@ const OracleBriefHub: React.FC<OracleBriefHubProps> = ({ isDarkMode, festival, o
                             <span className="px-2 py-1 bg-white/20 rounded text-[9px] font-bold uppercase tracking-wider backdrop-blur-md">Updated Just Now</span>
                         </div>
                         <h2 className="text-4xl font-light tabular-nums tracking-tighter">
-                            ₹68,540 <span className="text-sm font-medium text-white/60">left this month</span>
+                            ₹{persona ? persona.financials.safeToSpend.toLocaleString('en-IN') : '68,540'} <span className="text-sm font-medium text-white/60">left this month</span>
                         </h2>
+                        {persona && (
+                            <p className="text-[10px] text-white/50">{persona.name}'s {persona.role} Dashboard</p>
+                        )}
                     </div>
                 </div>
+
+                {/* --- Persona Oracle Briefs --- */}
+                {persona && persona.oracleBriefs.length > 0 && (
+                    <div className="space-y-3">
+                        <h3 className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em] ml-2">
+                            Oracle Briefs for {persona.name}
+                        </h3>
+                        {persona.oracleBriefs.map((brief) => (
+                            <div
+                                key={brief.id}
+                                className={`p-5 rounded-[1.75rem] border space-y-3 ${
+                                    brief.type === 'alert' ? 'bg-red-50 dark:bg-red-950/20 border-red-100 dark:border-red-900/30' :
+                                    brief.type === 'protection' ? 'bg-amber-50 dark:bg-amber-950/20 border-amber-100 dark:border-amber-900/30' :
+                                    brief.type === 'opportunity' ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-100 dark:border-emerald-900/30' :
+                                    'bg-blue-50 dark:bg-blue-950/20 border-blue-100 dark:border-blue-900/30'
+                                }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                                        brief.type === 'alert' ? 'bg-red-100 dark:bg-red-900/40 text-red-600' :
+                                        brief.type === 'protection' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600' :
+                                        brief.type === 'opportunity' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600' :
+                                        'bg-blue-100 dark:bg-blue-900/40 text-blue-600'
+                                    }`}>
+                                        {brief.type === 'alert' ? <AlertTriangle className="w-4 h-4" /> :
+                                         brief.type === 'protection' ? <ShieldCheck className="w-4 h-4" /> :
+                                         brief.type === 'opportunity' ? <TrendingUp className="w-4 h-4" /> :
+                                         <Sparkles className="w-4 h-4" />}
+                                    </div>
+                                    <h4 className="text-sm font-bold text-zinc-900 dark:text-white">{brief.title}</h4>
+                                </div>
+                                <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">{brief.summary}</p>
+                                {brief.actionLabel && (
+                                    <button
+                                        onClick={() => onAction(brief.actionLabel || 'Chat')}
+                                        className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1"
+                                        style={{ color: persona.accentColor }}
+                                    >
+                                        {brief.actionLabel} <ChevronRight className="w-3 h-3" />
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 {/* --- Predictive Prompt Top --- */}
                 <div className="p-6 bg-zinc-50 dark:bg-zinc-900 rounded-[2.5rem] border border-slate-100 dark:border-zinc-800 text-center space-y-4 shadow-sm animate-in slide-in-from-top-4">

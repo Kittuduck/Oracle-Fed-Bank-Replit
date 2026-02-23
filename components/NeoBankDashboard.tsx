@@ -14,10 +14,12 @@ import {
     Sun, Moon, Smartphone, Send, RefreshCw, Sparkles,
     TrendingUp, CheckCircle2, AlertTriangle, GraduationCap,
     PlusCircle, X, Target, Plus, EyeOff, ShieldCheck, StopCircle, Search, UserPlus, ArrowRight,
-    Home, PieChart, BarChart3, Gift, Laptop, HeartPulse, Cpu, Globe, ArrowUpRight
+    Home, PieChart, BarChart3, Gift, Laptop, HeartPulse, Cpu, Globe, ArrowUpRight, Circle,
+    FileText, Users, Heart, Receipt, PiggyBank, Flame
 } from 'lucide-react';
 import { Biller } from '../App';
 import GrowthEngine from './GrowthEngine';
+import { PersonaProfile } from '../data/personas';
 
 interface Goal {
     id: string;
@@ -52,7 +54,7 @@ interface NeoBankDashboardProps {
     onOpenCards: () => void;
     onOpenSOS: () => void;
     onOpenScanner: () => void;
-    onOpenBillPay: (biller: Biller) => void;
+    onOpenBillPay?: (biller: Biller) => void;
     onOpenTransfer: () => void;
     onOpenInvestments: () => void;
     onOpenLoans: () => void;
@@ -65,7 +67,13 @@ interface NeoBankDashboardProps {
     onNavigate: (page: any) => void;
     festival: 'DEFAULT' | 'DIWALI' | 'HOLI';
     setFestival: (f: 'DEFAULT' | 'DIWALI' | 'HOLI') => void;
+    persona?: PersonaProfile | null;
+    onResetPersona?: () => void;
 }
+
+const iconMap: Record<string, any> = {
+    Send, FileText, Smartphone, Receipt, Users, PiggyBank, Heart, ShieldCheck, Flame,
+};
 
 const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
     onOpenProfile,
@@ -87,11 +95,18 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
     onNavigate,
     festival,
     setFestival,
+    persona,
+    onResetPersona,
 }) => {
-    const totalBalance = currentFinancials.liquid;
+    const totalBalance = persona ? persona.financials.liquid : currentFinancials.liquid;
     const [showCardDetails, setShowCardDetails] = React.useState(false);
     const [showCVC, setShowCVC] = React.useState(false);
     const [copied, setCopied] = React.useState<string | null>(null);
+
+    const displayName = persona ? persona.name : 'Advait';
+    const accountLabel = persona ? persona.financials.accountLabel : 'Federal Imperial';
+    const accountNumber = persona ? persona.financials.accountNumber : '**** 8921';
+    const changePercent = persona ? persona.financials.changePercent : 2.4;
 
     const handleCopy = (text: string, label: string) => {
         navigator.clipboard.writeText(text);
@@ -106,42 +121,53 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 <div className="flex items-center gap-3 group cursor-pointer" onClick={onOpenProfile}>
                     <div className="relative w-11 h-11">
                         <div className="absolute inset-0 bg-federalblue-900/10 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Advait"
-                            alt="Profile"
-                            className="w-full h-full rounded-full object-cover border-2 border-white shadow-apple relative z-10"
-                        />
+                        {persona ? (
+                            <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-white shadow-apple relative z-10" style={{ backgroundColor: persona.accentColor }}>
+                                {persona.avatar}
+                            </div>
+                        ) : (
+                            <img
+                                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Advait"
+                                alt="Profile"
+                                className="w-full h-full rounded-full object-cover border-2 border-white shadow-apple relative z-10"
+                            />
+                        )}
                     </div>
                     <div>
                         <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest leading-none mb-1">Welcome back,</p>
-                        <h1 className="text-sm font-bold text-zinc-900 dark:text-white leading-none">Advait</h1>
+                        <h1 className="text-sm font-bold text-zinc-900 dark:text-white leading-none">{displayName}</h1>
+                        {persona && <p className="text-[9px] text-zinc-500 mt-0.5">{persona.role}</p>}
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                    {onResetPersona && (
                         <button
-                            onClick={() => {
-                                const next: Record<string, 'DEFAULT' | 'DIWALI' | 'HOLI'> = {
-                                    'DEFAULT': 'DIWALI',
-                                    'DIWALI': 'HOLI',
-                                    'HOLI': 'DEFAULT'
-                                };
-                                setFestival(next[festival]);
-                            }}
-                            className={`p-2 rounded-full transition-all ${festival !== 'DEFAULT' ? 'bg-federalgold-500/20 text-federalgold-600 dark:text-federalgold-400' : 'text-zinc-500 hover:text-federalblue-900'}`}
-                            title="Cycle Festival Theme"
+                            onClick={onResetPersona}
+                            className="p-2 text-zinc-500 hover:text-federalblue-900 dark:hover:text-white transition-colors"
+                            title="Switch Persona"
                         >
-                            <Gift className="w-5 h-5" strokeWidth={1.5} />
+                            <Circle className="w-5 h-5" strokeWidth={1.5} />
                         </button>
-                        <button
-                            onClick={toggleTheme}
-                            className="p-2 text-zinc-500 hover:text-federalblue-900 transition-colors"
-                        >
-                            {isDarkMode ? <Sun className="w-5 h-5" strokeWidth={1.5} /> : <Moon className="w-5 h-5" strokeWidth={1.5} />}
-                        </button>
-                    </div>
-                    <button className="p-2 text-zinc-500 hover:text-federalblue-900 transition-colors">
-                        <Search className="w-5 h-5" />
+                    )}
+                    <button
+                        onClick={() => {
+                            const next: Record<string, 'DEFAULT' | 'DIWALI' | 'HOLI'> = {
+                                'DEFAULT': 'DIWALI',
+                                'DIWALI': 'HOLI',
+                                'HOLI': 'DEFAULT'
+                            };
+                            setFestival(next[festival]);
+                        }}
+                        className={`p-2 rounded-full transition-all ${festival !== 'DEFAULT' ? 'bg-federalgold-500/20 text-federalgold-600 dark:text-federalgold-400' : 'text-zinc-500 hover:text-federalblue-900'}`}
+                        title="Cycle Festival Theme"
+                    >
+                        <Gift className="w-5 h-5" strokeWidth={1.5} />
+                    </button>
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 text-zinc-500 hover:text-federalblue-900 transition-colors"
+                    >
+                        {isDarkMode ? <Sun className="w-5 h-5" strokeWidth={1.5} /> : <Moon className="w-5 h-5" strokeWidth={1.5} />}
                     </button>
                 </div>
             </div>
@@ -164,14 +190,14 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                             </h2>
                             <p className="text-white/40 text-[10px] font-medium tracking-tight mt-1 flex items-center gap-2">
                                 <TrendingUp className="w-3 h-3 text-emerald-400" />
-                                <span className="text-emerald-400">+2.4%</span> vs last month
+                                <span className={changePercent >= 0 ? 'text-emerald-400' : 'text-red-400'}>{changePercent >= 0 ? '+' : ''}{changePercent}%</span> vs last month
                             </p>
                         </div>
 
                         <div className="relative z-10 flex justify-between items-end">
                             <div>
                                 <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest leading-none mb-2">Primary Account</p>
-                                <p className="text-white/90 text-sm font-medium tracking-tight leading-none italic">Federal Imperial **** 8921</p>
+                                <p className="text-white/90 text-sm font-medium tracking-tight leading-none italic">{accountLabel} {accountNumber}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="flex -space-x-3 text-white/40">
@@ -203,27 +229,112 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 {/* --- Quick Action Glass Pill (The floating bar) --- */}
                 <div className="relative">
                     <div className="glass-card rounded-[2rem] p-3 flex items-center justify-between shadow-apple-lg border-t-white/90 dark:border-t-white/10 transform -translate-y-6">
-                        {[
-                            { icon: Send, label: 'Send', color: 'bg-federalblue-900', hover: 'hover:bg-federalblue-800', onClick: onOpenTransfer },
-                            { icon: Smartphone, label: 'UPI', color: 'bg-emerald-600', hover: 'hover:bg-emerald-700', onClick: () => onNavigate('UPI') },
-                            { icon: Smartphone, label: 'Scan', color: 'bg-zinc-800 dark:bg-zinc-700', hover: 'hover:bg-black', onClick: onOpenScanner },
-                            { icon: AlertTriangle, label: 'SOS', color: 'bg-red-600', hover: 'hover:bg-red-700', onClick: onOpenSOS },
-                        ].map((action, i) => (
+                        {(persona ? persona.quickActions.map(qa => ({
+                            icon: iconMap[qa.icon] || Send,
+                            label: qa.label,
+                            color: `bg-[${qa.color}]`,
+                            onClick: qa.label === 'Send' || qa.label === 'Transfer' ? onOpenTransfer
+                                : qa.label === 'UPI' ? () => onNavigate('UPI')
+                                : qa.label === 'Scan' ? onOpenScanner
+                                : qa.label === 'SOS' || qa.label === 'Medical' ? onOpenSOS
+                                : qa.label === 'Pay Bills' || qa.label === 'Bills' ? () => onNavigate('EXPENDITURE')
+                                : qa.label === 'Save' ? () => onNavigate('GOALS')
+                                : qa.label === 'Split' ? onOpenTransfer
+                                : qa.label === 'Invoice' || qa.label === 'GST' ? () => onNavigate('EXPENDITURE')
+                                : onOpenTransfer
+                        })) : [
+                            { icon: Send, label: 'Send', color: 'bg-federalblue-900', onClick: onOpenTransfer },
+                            { icon: Smartphone, label: 'UPI', color: 'bg-emerald-600', onClick: () => onNavigate('UPI') },
+                            { icon: Smartphone, label: 'Scan', color: 'bg-zinc-800', onClick: onOpenScanner },
+                            { icon: AlertTriangle, label: 'SOS', color: 'bg-red-600', onClick: onOpenSOS },
+                        ]).map((action, i, arr) => (
                             <React.Fragment key={action.label}>
                                 <button
                                     onClick={action.onClick}
                                     className="flex-1 group py-3 px-1 rounded-[1.25rem] hover:bg-white/40 dark:hover:bg-white/10 transition-all duration-300 flex flex-col items-center justify-center gap-1.5 active:scale-95 text-center"
                                 >
-                                    <div className={`w-10 h-10 rounded-full ${action.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                                    <div className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`} style={{ backgroundColor: persona ? persona.accentColor : '#004d9c' }}>
                                         <action.icon className="w-5 h-5" strokeWidth={2.5} />
                                     </div>
                                     <span className="text-[10px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">{action.label}</span>
                                 </button>
-                                {i < 3 && <div className="w-px h-8 bg-zinc-200/50 dark:bg-zinc-800/50"></div>}
+                                {i < arr.length - 1 && <div className="w-px h-8 bg-zinc-200/50 dark:bg-zinc-800/50"></div>}
                             </React.Fragment>
                         ))}
                     </div>
                 </div>
+
+                {/* --- Persona Discover Cards --- */}
+                {persona && persona.discoverCards.length > 0 && (
+                    <div className="space-y-6 pt-2">
+                        <div className="flex justify-between items-center px-1">
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none tracking-tight">Discover</h3>
+                        </div>
+
+                        <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory scrollbar-hide">
+                            {persona.discoverCards.map((card, i) => (
+                                <div
+                                    key={i}
+                                    className={`min-w-[260px] snap-center p-6 rounded-[2rem] bg-gradient-to-br ${card.color} text-white shadow-xl relative overflow-hidden cursor-pointer active:scale-[0.98] transition-transform`}
+                                >
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-[40px] -mr-10 -mt-10"></div>
+                                    {card.tag && (
+                                        <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md mb-3 inline-block">{card.tag}</span>
+                                    )}
+                                    <h4 className="text-base font-bold mt-2 mb-1">{card.title}</h4>
+                                    <p className="text-xs text-white/70">{card.subtitle}</p>
+                                    <div className="mt-4 flex items-center gap-1 text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                                        <span>Explore</span>
+                                        <ArrowRight className="w-3 h-3" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* --- Oracle Daily Brief Preview --- */}
+                {persona && persona.oracleBriefs.length > 0 && (
+                    <div className="space-y-4 pt-2">
+                        <div className="flex items-center gap-3 px-1">
+                            <div className="w-8 h-8 rounded-full bg-federalgold-500 flex items-center justify-center text-white shadow-oracle">
+                                <Sparkles className="w-4 h-4" />
+                            </div>
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none">Oracle Daily Brief</h3>
+                        </div>
+                        <div className="space-y-3">
+                            {persona.oracleBriefs.slice(0, 3).map((brief) => (
+                                <div
+                                    key={brief.id}
+                                    className="glass-card p-5 rounded-[1.75rem] border border-slate-100 dark:border-zinc-800 space-y-2 cursor-pointer active:scale-[0.98] transition-transform"
+                                    onClick={() => onNavigate('ORACLE_HUB')}
+                                >
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className={`w-2 h-2 rounded-full ${
+                                                    brief.type === 'alert' ? 'bg-red-500' :
+                                                    brief.type === 'protection' ? 'bg-amber-500' :
+                                                    brief.type === 'opportunity' ? 'bg-emerald-500' :
+                                                    'bg-blue-500'
+                                                }`} />
+                                                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">{brief.title}</h4>
+                                            </div>
+                                            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{brief.summary}</p>
+                                        </div>
+                                        <ChevronRight className="w-4 h-4 text-zinc-400 shrink-0 mt-1" />
+                                    </div>
+                                    {brief.actionLabel && (
+                                        <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: persona.accentColor }}>
+                                            <span>{brief.actionLabel}</span>
+                                            <ArrowRight className="w-3 h-3" />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* --- Services: The Frosted Grid --- */}
                 <div className="space-y-6 pt-2">
@@ -257,6 +368,7 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 </div>
 
                 {/* --- AI Growth Engine --- */}
+                {!persona && (
                 <div className="pt-6 animate-fade-in relative">
                     <div className="flex items-center gap-3 px-1 mb-6">
                         <div className="w-8 h-8 rounded-full bg-federalgold-500 flex items-center justify-center text-white shadow-oracle">
@@ -273,6 +385,31 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                         />
                     </div>
                 </div>
+                )}
+
+                {/* --- Persona Tailored Features --- */}
+                {persona && (
+                    <div className="space-y-4 pt-2">
+                        <div className="flex justify-between items-center px-1">
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none tracking-tight">Your Features</h3>
+                        </div>
+                        {persona.features.map((feature, i) => {
+                            const FeatureIcon = iconMap[feature.icon] || Sparkles;
+                            return (
+                                <div key={i} className="glass-card p-5 rounded-[1.75rem] border border-slate-100 dark:border-zinc-800 flex items-start gap-4 cursor-pointer active:scale-[0.98] transition-transform">
+                                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: `${persona.accentColor}15` }}>
+                                        <FeatureIcon className="w-6 h-6" style={{ color: persona.accentColor }} />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h4 className="text-sm font-bold text-zinc-900 dark:text-white mb-1">{feature.title}</h4>
+                                        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{feature.description}</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-zinc-400 shrink-0 mt-1" />
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
             {/* --- Debit Card Details Modal --- */}

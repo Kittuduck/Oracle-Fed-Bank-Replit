@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Sun, Moon, Target, Sparkles, CreditCard, Zap, Smartphone, Dumbbell, GraduationCap, EyeOff } from 'lucide-react';
+import { ArrowLeft, Sun, Moon, Target, Sparkles, CreditCard, Zap, Smartphone, Dumbbell, GraduationCap, EyeOff, Circle } from 'lucide-react';
 import GoalTracker, { Goal } from './components/GoalTracker';
 import NeoBankDashboard from './components/NeoBankDashboard';
 import AutomationHub from './components/AutomationHub';
@@ -19,6 +19,8 @@ import CardApplicationFlow from './components/CardApplicationFlow';
 import NicheLendingHub from './components/NicheLendingHub';
 import LegacyServices from './components/LegacyServices';
 import BottomNav from './components/BottomNav';
+import PersonaSelector from './components/PersonaSelector';
+import { PERSONAS, PersonaProfile } from './data/personas';
 import { SimulationUpdateData, NewGoalData } from './services/geminiService';
 
 export interface Biller {
@@ -33,23 +35,62 @@ export interface Biller {
 }
 
 const App: React.FC = () => {
-    const [view, setView] = useState<'DASHBOARD' | 'PROFILE' | 'GOALS' | 'ORACLE' | 'ORACLE_HUB' | 'AUTOMATION_HUB' | 'PORTFOLIO' | 'EXPENDITURE' | 'ONBOARDING' | 'PAYMENTS' | 'CARDS' | 'SUPPORT' | 'INVESTMENTS' | 'LOANS' | 'CARD_APPLY' | 'NICHE_LOANS' | 'LEGACY_SERVICES'>('DASHBOARD');
+    const [selectedPersona, setSelectedPersona] = useState<PersonaProfile | null>(null);
+    const [view, setView] = useState<'PERSONA_SELECT' | 'DASHBOARD' | 'PROFILE' | 'GOALS' | 'ORACLE' | 'ORACLE_HUB' | 'AUTOMATION_HUB' | 'PORTFOLIO' | 'EXPENDITURE' | 'ONBOARDING' | 'PAYMENTS' | 'CARDS' | 'SUPPORT' | 'INVESTMENTS' | 'LOANS' | 'CARD_APPLY' | 'NICHE_LOANS' | 'LEGACY_SERVICES'>('PERSONA_SELECT');
     const [payTab, setPayTab] = useState<'SEND' | 'BILL' | 'SCAN'>('SEND');
-    // Default isDarkMode to false for Federal Bank Light Mode Brand
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(true);
 
-    // GLOBAL ORACLE STATE: Defaults to TRUE (Agentic Mode)
     const [oracleActive, setOracleActive] = useState(true);
-
-    // FESTIVAL THEME: 'DEFAULT' | 'DIWALI' | 'HOLI'
     const [festival, setFestival] = useState<'DEFAULT' | 'DIWALI' | 'HOLI'>('DEFAULT');
-
-    // State to handle transfer pre-fills from Oracle actions
     const [transferPrefill, setTransferPrefill] = useState<{ recipient: string, amount: string } | null>(null);
     const [oraclePrompt, setOraclePrompt] = useState<string>('');
 
-    // Shared state for financial context across views
-    const [goals, setGoals] = useState<Goal[]>([
+    const handlePersonaSelect = (persona: PersonaProfile) => {
+        setSelectedPersona(persona);
+        const personaGoals: Goal[] = persona.goals.map(g => ({
+            id: g.id,
+            title: g.title,
+            icon: Target,
+            currentAmount: g.currentAmount,
+            targetAmount: g.targetAmount,
+            deadlineYear: g.deadlineYear,
+            status: g.status,
+            projectedimpact: g.status === 'AT_RISK' ? 'Shortfall Detected' : g.status === 'REBALANCED' ? 'Rebalanced' : 'On Track',
+            history: [g.currentAmount * 0.9, g.currentAmount * 0.93, g.currentAmount * 0.96, g.currentAmount * 0.98, g.currentAmount],
+            fundingSource: 'Auto-allocated',
+            monthlyContribution: g.monthlyContribution,
+            description: g.description,
+            insights: g.insights,
+        }));
+        setGoals(personaGoals);
+
+        const billerIconMap: Record<string, any> = {
+            'Tax': Zap, 'Utilities': Zap, 'Vendor': CreditCard, 'Software': Smartphone,
+            'Insurance': CreditCard, 'Entertainment': Smartphone, 'Finance': CreditCard,
+            'Health': CreditCard, 'Living': CreditCard, 'Lifestyle': CreditCard,
+            'Education': GraduationCap, 'Household': CreditCard,
+        };
+        const personaBillers: Biller[] = persona.billers.map(b => ({
+            ...b,
+            icon: billerIconMap[b.category] || CreditCard,
+        }));
+        setBillers(personaBillers);
+
+        setCurrentFinancials({
+            liquid: persona.financials.liquid,
+            need: 0,
+            goal: persona.goals[0]?.targetAmount || 0,
+        });
+
+        setView('DASHBOARD');
+    };
+
+    const handleResetPersona = () => {
+        setSelectedPersona(null);
+        setView('PERSONA_SELECT');
+    };
+
+    const defaultGoals: Goal[] = [
         {
             id: 'g1',
             title: 'Fat FIRE (Retirement)',
@@ -68,39 +109,20 @@ const App: React.FC = () => {
                 'Projected to hit target 14 months early at current rate.'
             ]
         },
-        {
-            id: 'g2',
-            title: "Daughter's Education",
-            icon: Target,
-            currentAmount: 6500000,
-            targetAmount: 25000000,
-            deadlineYear: 2035,
-            status: 'AT_RISK',
-            projectedimpact: 'Shortfall Detected',
-            fundingSource: 'Hybrid Debt Instruments',
-            monthlyContribution: 50000,
-            description: 'Ivy League tuition fund for Riya (Series A + Living expenses).',
-            insights: [
-                'Inflation for education sector trending at 11%.',
-                'Recommended: Increase SIP by ₹15k/mo to bridge gap.'
-            ]
-        }
-    ]);
+    ];
 
-    // Global billers state shared between Dashboard and Expenditure
+    const [goals, setGoals] = useState<Goal[]>(defaultGoals);
+
     const [billers, setBillers] = useState<Biller[]>([
         { id: 'b1', name: 'Infinite Black Card', amount: 145000, type: 'DUE', dueDate: '3 days', icon: CreditCard, category: 'Finance' },
         { id: 'b2', name: 'Adani Electricity', amount: 4250, type: 'DUE', dueDate: '4 days', icon: Zap, category: 'Utilities' },
         { id: 'b3', name: 'Netflix Premium', amount: 649, type: 'AUTO', status: 'ACTIVE', dueDate: '5th of month', icon: Smartphone, category: 'Entertainment' },
-        { id: 'b4', name: "Gold's Gym", amount: 3500, type: 'AUTO', status: 'ACTIVE', dueDate: '1st of month', icon: Dumbbell, category: 'Health' },
-        { id: 'b5', name: 'Adobe Creative Cloud', amount: 4230, type: 'AUTO', status: 'PAUSED', dueDate: '15th of month', icon: Smartphone, category: 'Software' }
     ]);
 
-    // Basic financial context for the orchestrator
     const [currentFinancials, setCurrentFinancials] = useState({
         liquid: 1240500,
         need: 0,
-        goal: 25000000 // Daughter's education target
+        goal: 25000000,
     });
 
     const handleAddGoal = (newGoal: Goal) => {
@@ -176,6 +198,15 @@ const App: React.FC = () => {
     };
 
     const renderContent = () => {
+        if (view === 'PERSONA_SELECT') {
+            return (
+                <PersonaSelector
+                    personas={PERSONAS}
+                    onSelect={handlePersonaSelect}
+                />
+            );
+        }
+
         if (view === 'PAYMENTS') {
             return (
                 <PaymentFlow
@@ -413,6 +444,7 @@ const App: React.FC = () => {
                             isDarkMode={isDarkMode}
                             festival={festival}
                             currentFinancials={currentFinancials}
+                            persona={selectedPersona}
                             onAction={(action) => {
                                 if (action === 'Chat' || action === 'Windfall Allocation') {
                                     setOraclePrompt(action === 'Windfall Allocation' ? 'Windfall Allocation' : '');
@@ -504,6 +536,8 @@ const App: React.FC = () => {
                 }}
                 festival={festival}
                 setFestival={setFestival}
+                persona={selectedPersona}
+                onResetPersona={handleResetPersona}
             />
         );
     };
@@ -512,7 +546,7 @@ const App: React.FC = () => {
         <div className={`h-full ${isDarkMode ? 'dark' : ''} ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''} bg-gray-50 dark:bg-gray-900 flex justify-center min-h-screen`}>
             <div className="w-full max-w-md h-full min-h-screen bg-white dark:bg-zinc-950 border-2 border-slate-800 shadow-2xl relative overflow-hidden">
                 {renderContent()}
-                {(view !== 'ONBOARDING' && view !== 'PAYMENTS' && view !== 'CARDS' && view !== 'SUPPORT' && view !== 'INVESTMENTS' && view !== 'LOANS' && view !== 'CARD_APPLY' && view !== 'NICHE_LOANS' && view !== 'LEGACY_SERVICES' && view !== 'ORACLE') && (
+                {(view !== 'PERSONA_SELECT' && view !== 'ONBOARDING' && view !== 'PAYMENTS' && view !== 'CARDS' && view !== 'SUPPORT' && view !== 'INVESTMENTS' && view !== 'LOANS' && view !== 'CARD_APPLY' && view !== 'NICHE_LOANS' && view !== 'LEGACY_SERVICES' && view !== 'ORACLE') && (
                     <BottomNav
                         activePage={view as any}
                         onNavigate={(page) => setView(page)}

@@ -1,0 +1,42 @@
+Replit Prompt: Oracle Federal Bank - Multi-Persona AI Banking Experience
+Project Overview:
+Build a premium, AI-first banking application for Federal Bank called "Oracle." The app uses a modern, high-end aesthetic (inspired by the 'Cred' app) with a dark-mode-first design, utilizing Federal Bank’s brand colors: Federal Blue (#004d9c) and Federal Gold (#f37021).
+
+Core Architecture:
+
+Framework: React with Vite and TypeScript.
+Styling: Tailwind CSS (Mobile-first, sleek squircles, glassmorphism, and premium depth).
+Icons: Lucide-react.
+AI Engine: Integrated "Oracle Intelligence" (Gemini API) that provides proactive financial advice.
+The Multi-Persona Experience:
+The app must start with a Persona Selection Screen. Once a user is selected, the entire dashboard, Oracle insights, and available "Discover" features must dynamically pivot to suit that specific user’s life stage and needs.
+
+Personas & Tailored Features:
+
+Rajesh (45) - Business Owner:
+Vibe: Active, Risky, High-stress.
+Features: Auto-GST Reconciliation (tax filing), Cash Flow Forecaster (predicting lean months/credit lines), Vendor Risk Alert (monitoring supplier credit ratings).
+Ishan (21) - Student:
+Vibe: Creative, Independent, Tech-native.
+Features: Instant Bill Splitting (UPI requests for friends), Goal Gamifier (skipping coffee to save for Europe), Subscription Clean-up (canceling unused trials).
+Mr. Kapoor (68) - Pensioner:
+Vibe: Safe, Passive, Risk-averse.
+Features: Pension Orchestrator (auto-moving payouts to medical/household wallets), Benefit Matchmaker (senior citizen healthcare schemes), Deepfake Scrutiny (AI-driven fraud protection/transfer soft-locks).
+Anjali (38) - Homemaker:
+Vibe: Busy, Organized, Family CFO.
+Features: Household Admin (paying 15+ utility bills), Saving Architect (optimizing surplus for wedding/event funds), Spending Guardrails (nudges when grocery trends exceed average).
+Visual & UX Requirements:
+
+Entry Point: A clean, minimal grid or list of the 4 personas with brief descriptions.
+Global Navigation: In the top bar of every journey, include a "Blank Circle" icon (a simple stroked circle) that, when clicked, resets the app and returns the user to the Persona Selection page.
+Visual Style:
+Use "Cred-style" UI: Large typography, deep shadows, card-based layouts with horizontal snapping scrolls.
+Dark Mode (Default): Deep blacks (#000000) and slate grays with subtle blue/gold glows.
+Light Mode: Premium off-white (#f4f6f8) with clean Federal Blue accents.
+Oracle Brief: The "Oracle Daily Brief" widget should change its tone and content based on the persona (e.g., Rajesh gets business alerts; Mr. Kapoor gets safety and health scheme alerts).
+Functional Components to Build:
+
+PersonaSelector: The initial landing page.
+NeoBankDashboard: The main hub that accepts a userProfile prop to render dynamic content.
+OracleIntelligence: The AI component that generates persona-specific "Daily Briefs."
+ActionDrawer: A tabbed widget for Activity, Transfers, and Bill Pay, pre-filled with persona-relevant data.
