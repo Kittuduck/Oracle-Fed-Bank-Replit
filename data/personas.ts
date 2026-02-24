@@ -134,9 +134,9 @@ export const PERSONAS: PersonaProfile[] = [
       { label: 'Invest', icon: 'TrendingUp', color: '#f37021' },
     ],
     discoverCards: [
-      { title: 'Fat FIRE Dashboard', subtitle: 'Track your path to early retirement.', color: 'from-blue-700 to-indigo-900', tag: 'FIRE', navigateTo: 'GOALS' },
-      { title: 'Family Shield', subtitle: 'Healthcare & legacy for 3 generations.', color: 'from-emerald-600 to-teal-900', navigateTo: 'ORACLE' },
-      { title: 'Auto-Pilot Banking', subtitle: 'Zero manual tasks. Oracle handles it all.', color: 'from-orange-500 to-red-700', tag: 'SMART', navigateTo: 'AUTOMATION_HUB' },
+      { title: 'Fat FIRE Dashboard', subtitle: 'Track your path to early retirement.', color: 'from-blue-500/80 to-indigo-700/80', tag: 'FIRE', navigateTo: 'GOALS' },
+      { title: 'Family Shield', subtitle: 'Healthcare & legacy for 3 generations.', color: 'from-emerald-500/80 to-teal-700/80', navigateTo: 'ORACLE' },
+      { title: 'Auto-Pilot Banking', subtitle: 'Zero manual tasks. Oracle handles it all.', color: 'from-orange-400/80 to-red-600/80', tag: 'SMART', navigateTo: 'AUTOMATION_HUB' },
     ],
   },
   {
@@ -188,9 +188,9 @@ export const PERSONAS: PersonaProfile[] = [
       { label: 'SOS', icon: 'ShieldCheck', color: '#7c3aed' },
     ],
     discoverCards: [
-      { title: 'Pension Orchestrator', subtitle: 'Auto-split pension into wallets.', color: 'from-emerald-600 to-green-900', tag: 'ACTIVE', navigateTo: 'PORTFOLIO' },
-      { title: 'Benefit Matchmaker', subtitle: 'Government schemes you qualify for.', color: 'from-blue-500 to-indigo-800', navigateTo: 'ORACLE' },
-      { title: 'Deepfake Scrutiny', subtitle: 'AI fraud shield. Sleep peacefully.', color: 'from-red-500 to-rose-800', tag: 'SHIELD', navigateTo: 'ORACLE' },
+      { title: 'Pension Orchestrator', subtitle: 'Auto-split pension into wallets.', color: 'from-emerald-500/80 to-green-700/80', tag: 'ACTIVE', navigateTo: 'PORTFOLIO' },
+      { title: 'Benefit Matchmaker', subtitle: 'Government schemes you qualify for.', color: 'from-blue-400/80 to-indigo-600/80', navigateTo: 'ORACLE' },
+      { title: 'Deepfake Scrutiny', subtitle: 'AI fraud shield. Sleep peacefully.', color: 'from-red-400/80 to-rose-600/80', tag: 'SHIELD', navigateTo: 'ORACLE' },
     ],
   },
   {
@@ -242,9 +242,9 @@ export const PERSONAS: PersonaProfile[] = [
       { label: 'GST', icon: 'Receipt', color: '#dc2626' },
     ],
     discoverCards: [
-      { title: 'Auto-GST Reconciliation', subtitle: 'Match invoices with GSTN. Zero mismatches.', color: 'from-blue-600 to-blue-900', tag: 'NEW', navigateTo: 'EXPENDITURE' },
-      { title: 'Cash Flow Forecaster', subtitle: 'AI predicts your next lean month.', color: 'from-amber-500 to-orange-700', navigateTo: 'PORTFOLIO' },
-      { title: 'Vendor Risk Monitor', subtitle: 'Track supplier credit health live.', color: 'from-red-500 to-red-800', tag: 'ALERT', navigateTo: 'ORACLE' },
+      { title: 'Auto-GST Reconciliation', subtitle: 'Match invoices with GSTN. Zero mismatches.', color: 'from-blue-500/80 to-blue-700/80', tag: 'NEW', navigateTo: 'EXPENDITURE' },
+      { title: 'Cash Flow Forecaster', subtitle: 'AI predicts your next lean month.', color: 'from-amber-400/80 to-orange-600/80', navigateTo: 'PORTFOLIO' },
+      { title: 'Vendor Risk Monitor', subtitle: 'Track supplier credit health live.', color: 'from-red-400/80 to-red-600/80', tag: 'ALERT', navigateTo: 'ORACLE' },
     ],
   },
   {
@@ -296,9 +296,9 @@ export const PERSONAS: PersonaProfile[] = [
       { label: 'Save', icon: 'PiggyBank', color: '#f37021' },
     ],
     discoverCards: [
-      { title: 'Instant Bill Splitting', subtitle: 'Split dinner. Auto-request friends.', color: 'from-violet-500 to-purple-800', tag: 'HOT', navigateTo: 'PAYMENTS' },
-      { title: 'Goal Gamifier', subtitle: 'Skip coffee → Save for Europe.', color: 'from-orange-400 to-red-600', navigateTo: 'GOALS' },
-      { title: 'Subscription Clean-up', subtitle: '₹2k/mo wasted on unused trials.', color: 'from-emerald-500 to-teal-700', tag: 'SAVE', navigateTo: 'EXPENDITURE' },
+      { title: 'Instant Bill Splitting', subtitle: 'Split dinner. Auto-request friends.', color: 'from-violet-400/80 to-purple-600/80', tag: 'HOT', navigateTo: 'PAYMENTS' },
+      { title: 'Goal Gamifier', subtitle: 'Skip coffee → Save for Europe.', color: 'from-orange-400/80 to-red-500/80', navigateTo: 'GOALS' },
+      { title: 'Subscription Clean-up', subtitle: '₹2k/mo wasted on unused trials.', color: 'from-emerald-400/80 to-teal-600/80', tag: 'SAVE', navigateTo: 'EXPENDITURE' },
     ],
   },
   {
@@ -354,9 +354,9 @@ export const PERSONAS: PersonaProfile[] = [
       { label: 'Save', icon: 'PiggyBank', color: '#059669' },
     ],
     discoverCards: [
-      { title: 'Household Admin', subtitle: 'All 15+ bills in one dashboard.', color: 'from-pink-500 to-rose-800', tag: 'MANAGE', navigateTo: 'EXPENDITURE' },
-      { title: 'Saving Architect', subtitle: 'Optimize surplus for family goals.', color: 'from-emerald-500 to-green-800', navigateTo: 'GOALS' },
-      { title: 'Spending Guardrails', subtitle: 'Nudges when you overspend.', color: 'from-amber-500 to-orange-700', tag: 'SMART', navigateTo: 'EXPENDITURE' },
+      { title: 'Household Admin', subtitle: 'All 15+ bills in one dashboard.', color: 'from-pink-400/80 to-rose-600/80', tag: 'MANAGE', navigateTo: 'EXPENDITURE' },
+      { title: 'Saving Architect', subtitle: 'Optimize surplus for family goals.', color: 'from-emerald-400/80 to-green-600/80', navigateTo: 'GOALS' },
+      { title: 'Spending Guardrails', subtitle: 'Nudges when you overspend.', color: 'from-amber-400/80 to-orange-600/80', tag: 'SMART', navigateTo: 'EXPENDITURE' },
     ],
   },
 ];
