@@ -272,16 +272,16 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                             {persona.discoverCards.map((card, i) => (
                                 <div
                                     key={i}
-                                    className={`min-w-[260px] snap-center p-6 rounded-[2rem] bg-gradient-to-br ${card.color} text-white shadow-xl relative overflow-hidden cursor-pointer active:scale-[0.98] transition-transform`}
+                                    className={`min-w-[240px] snap-center p-5 rounded-2xl bg-gradient-to-b ${card.color} text-white shadow-lg relative overflow-hidden cursor-pointer active:scale-[0.97] transition-all duration-200 border border-white/10`}
                                     onClick={() => card.navigateTo && onNavigate(card.navigateTo)}
                                 >
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-[40px] -mr-10 -mt-10"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                                     {card.tag && (
-                                        <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md mb-3 inline-block">{card.tag}</span>
+                                        <span className="relative z-10 text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-md bg-white/20 backdrop-blur-md mb-2 inline-block">{card.tag}</span>
                                     )}
-                                    <h4 className="text-base font-bold mt-2 mb-1">{card.title}</h4>
-                                    <p className="text-xs text-white/70">{card.subtitle}</p>
-                                    <div className="mt-4 flex items-center gap-1 text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                                    <h4 className="relative z-10 text-[15px] font-semibold mt-2 mb-1 leading-snug">{card.title}</h4>
+                                    <p className="relative z-10 text-[11px] text-white/70 leading-relaxed">{card.subtitle}</p>
+                                    <div className="relative z-10 mt-3 flex items-center gap-1 text-[10px] font-bold text-white/50 uppercase tracking-widest">
                                         <span>Explore</span>
                                         <ArrowRight className="w-3 h-3" />
                                     </div>
