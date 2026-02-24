@@ -598,8 +598,8 @@ const ExpenditurePage: React.FC<ExpenditurePageProps> = ({ onBack, isDarkMode, t
                                             <div key={cat.name}>
                                                 <div className="flex justify-between items-center mb-1.5">
                                                     <div className="flex items-center gap-2">
-                                                        <div className={`p-1.5 rounded-md ${isDarkMode ? '' : `${cat.color} bg-opacity-10`}`} style={isDarkMode ? { backgroundColor: 'rgba(100,116,139,0.15)' } : undefined}>
-                                                            <cat.icon className={`w-3 h-3 ${isDarkMode ? 'text-slate-300' : cat.textColor}`} />
+                                                        <div className={`p-1.5 rounded-md ${isDarkMode ? 'bg-zinc-800' : 'bg-slate-100'}`}>
+                                                            <cat.icon className={`w-3 h-3 ${isDarkMode ? 'text-zinc-300' : cat.textColor}`} />
                                                         </div>
                                                         <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{cat.name}</span>
                                                     </div>

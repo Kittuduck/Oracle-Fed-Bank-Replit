@@ -197,7 +197,7 @@ const InvestmentsHub: React.FC<InvestmentsHubProps> = ({ onBack, onBookFD, onVie
                         onClick={() => setView('BOOK_FD')}
                         className="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-slate-100 dark:border-zinc-800 shadow-sm flex flex-col gap-3 hover:border-federalblue-300 transition-all text-left group"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-federalblue-50 dark:bg-federalblue-900/40 text-federalblue-900 dark:text-federalblue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform ${isDarkMode ? 'bg-zinc-800 text-federalblue-400' : 'bg-federalblue-50 text-federalblue-900'}`}>
                             <Plus className="w-6 h-6" />
                         </div>
                         <div>
@@ -206,7 +206,7 @@ const InvestmentsHub: React.FC<InvestmentsHubProps> = ({ onBack, onBookFD, onVie
                         </div>
                     </button>
                     <button className="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-slate-100 dark:border-zinc-800 shadow-sm flex flex-col gap-3 hover:border-federalblue-300 transition-all text-left group">
-                        <div className="w-10 h-10 rounded-xl bg-federalgold-50 dark:bg-federalgold-900/40 text-federalgold-600 dark:text-federalgold-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform ${isDarkMode ? 'bg-zinc-800 text-federalgold-400' : 'bg-federalgold-50 text-federalgold-600'}`}>
                             <PieChart className="w-6 h-6" />
                         </div>
                         <div>
@@ -248,14 +248,14 @@ const InvestmentsHub: React.FC<InvestmentsHubProps> = ({ onBack, onBookFD, onVie
                 </div>
 
                 {/* Wealth Insights */}
-                <div className="bg-federalblue-50 dark:bg-federalblue-900/20 border border-federalblue-100 dark:border-federalblue-800/30 rounded-3xl p-6 relative overflow-hidden group cursor-pointer">
+                <div className={`rounded-3xl p-6 relative overflow-hidden group cursor-pointer ${isDarkMode ? 'bg-zinc-900 border border-zinc-800' : 'bg-federalblue-50 border border-federalblue-100'}`}>
                     <div className="relative z-10 space-y-4">
                         <div className="flex items-center gap-2">
                             <ShieldCheck className="w-5 h-5 text-federalblue-900 dark:text-federalblue-400" />
                             <span className="text-[10px] font-black text-federalblue-900 dark:text-federalblue-300 uppercase tracking-widest">Portfolio Health</span>
                         </div>
                         <p className="text-sm font-bold text-federalblue-900 dark:text-zinc-200 leading-tight">Your portfolio is well-diversified. Consider hedging with <span className="text-federalgold-600 dark:text-federalgold-400 underline">Gold Mutual Funds</span>.</p>
-                        <button className="text-[10px] font-black text-federalblue-900 dark:text-federalblue-900 bg-white dark:bg-zinc-100 px-3 py-1.5 rounded-full shadow-sm hover:translate-x-1 transition-transform flex items-center gap-1 uppercase tracking-widest">
+                        <button className="text-[10px] font-black text-federalblue-900 bg-white px-3 py-1.5 rounded-full shadow-sm hover:translate-x-1 transition-transform flex items-center gap-1 uppercase tracking-widest">
                             Analyze Mix <ChevronRight className="w-3 h-3" />
                         </button>
                     </div>
