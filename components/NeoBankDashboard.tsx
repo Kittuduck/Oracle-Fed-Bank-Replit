@@ -176,33 +176,29 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                 {/* --- Hero: The Titanium Balance Card --- */}
                 <div className="relative group cursor-pointer" onClick={() => setShowCardDetails(true)}>
                     <div className="absolute -inset-1 bg-gradient-to-r from-federalblue-600 to-federalblue-900 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-30 transition duration-1000 group-hover:duration-200"></div>
-                    <div className="relative aspect-[1.618/1] w-full rounded-[2rem] bg-gradient-to-br from-federalblue-900 via-federalblue-800 to-federalblue-900 p-10 flex flex-col justify-between shadow-hero overflow-hidden border border-white/10 transition-all duration-500 active:scale-[0.98]">
-                        {/* Decorative Atmospheric Glow */}
+                    <div className="relative aspect-[1.618/1] w-full rounded-[2rem] bg-gradient-to-br from-federalblue-900 via-federalblue-800 to-federalblue-900 px-8 py-7 flex flex-col justify-center shadow-hero overflow-hidden border border-white/10 transition-all duration-500 active:scale-[0.98]">
                         <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-[80px] -mr-20 -mt-20"></div>
                         <div className="absolute bottom-0 left-0 w-48 h-48 bg-federalgold-500/10 rounded-full blur-[60px] -ml-10 -mb-10"></div>
 
-                        <div className="relative z-10">
-                            <div className="flex justify-between items-start mb-2">
-                                <span className="text-white/50 text-[10px] font-bold uppercase tracking-[0.2em]">Total Liquidity</span>
-                            </div>
-                            <h2 className="text-5xl font-light text-white tabular-nums tracking-tighter drop-shadow-sm">
-                                ₹{totalBalance.toLocaleString('en-IN')}
-                            </h2>
-                            <p className="text-white/40 text-[10px] font-medium tracking-tight mt-1 flex items-center gap-2">
-                                <TrendingUp className="w-3 h-3 text-emerald-400" />
-                                <span className={changePercent >= 0 ? 'text-emerald-400' : 'text-red-400'}>{changePercent >= 0 ? '+' : ''}{changePercent}%</span> vs last month
-                            </p>
-                        </div>
+                        <div className="relative z-10 flex flex-col h-full justify-between">
+                            <span className="text-white/50 text-[10px] font-bold uppercase tracking-[0.2em]">Total Liquidity</span>
 
-                        <div className="relative z-10 flex justify-between items-end">
-                            <div>
-                                <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest leading-none mb-2">Primary Account</p>
-                                <p className="text-white/90 text-sm font-medium tracking-tight leading-none italic">{accountLabel} {accountNumber}</p>
+                            <div className="flex-1 flex flex-col justify-center -mt-1">
+                                <h2 className="text-[2.75rem] font-extralight text-white tabular-nums tracking-tighter drop-shadow-sm leading-none">
+                                    ₹{totalBalance.toLocaleString('en-IN')}
+                                </h2>
+                                <p className="text-white/40 text-[10px] font-medium tracking-tight mt-2.5 flex items-center gap-2">
+                                    <TrendingUp className="w-3 h-3 text-emerald-400" />
+                                    <span className={changePercent >= 0 ? 'text-emerald-400' : 'text-red-400'}>{changePercent >= 0 ? '+' : ''}{changePercent}%</span> vs last month
+                                </p>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <div className="flex -space-x-3 text-white/40">
-                                    <CreditCard className="w-6 h-6" />
+
+                            <div className="flex justify-between items-end">
+                                <div>
+                                    <p className="text-white/50 text-[9px] font-bold uppercase tracking-widest leading-none mb-1.5">Primary Account</p>
+                                    <p className="text-white/80 text-[13px] font-medium tracking-tight leading-none italic">{accountLabel} {accountNumber}</p>
                                 </div>
+                                <CreditCard className="w-5 h-5 text-white/30" />
                             </div>
                         </div>
                     </div>
