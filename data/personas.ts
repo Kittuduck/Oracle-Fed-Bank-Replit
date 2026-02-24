@@ -23,6 +23,7 @@ export interface PersonaFeature {
   title: string;
   description: string;
   icon: string;
+  navigateTo?: string;
 }
 
 export interface PersonaFinancials {
@@ -77,6 +78,7 @@ export interface DiscoverCard {
   subtitle: string;
   color: string;
   tag?: string;
+  navigateTo?: string;
 }
 
 export const PERSONAS: PersonaProfile[] = [
