@@ -272,15 +272,16 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                             {persona.discoverCards.map((card, i) => (
                                 <div
                                     key={i}
-                                    className="min-w-[220px] snap-center p-4 rounded-xl glass-card border border-slate-200/80 dark:border-zinc-700/60 cursor-pointer active:scale-[0.97] transition-all duration-200"
+                                    className={`min-w-[260px] snap-center p-6 rounded-[2rem] bg-gradient-to-br ${card.color} text-white shadow-xl relative overflow-hidden cursor-pointer active:scale-[0.98] transition-transform`}
                                     onClick={() => card.navigateTo && onNavigate(card.navigateTo)}
                                 >
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-[40px] -mr-10 -mt-10"></div>
                                     {card.tag && (
-                                        <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-federalblue-900/10 dark:bg-federalblue-300/15 text-federalblue-900 dark:text-federalblue-300 mb-2 inline-block">{card.tag}</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md mb-3 inline-block">{card.tag}</span>
                                     )}
-                                    <h4 className="text-[14px] font-semibold text-zinc-900 dark:text-white mt-1 mb-1 leading-snug">{card.title}</h4>
-                                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">{card.subtitle}</p>
-                                    <div className="mt-3 flex items-center gap-1 text-[10px] font-semibold text-federalblue-900 dark:text-federalblue-300 uppercase tracking-widest">
+                                    <h4 className="text-base font-bold mt-2 mb-1">{card.title}</h4>
+                                    <p className="text-xs text-white/70">{card.subtitle}</p>
+                                    <div className="mt-4 flex items-center gap-1 text-[10px] font-bold text-white/60 uppercase tracking-widest">
                                         <span>Explore</span>
                                         <ArrowRight className="w-3 h-3" />
                                     </div>
