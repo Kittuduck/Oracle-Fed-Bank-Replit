@@ -336,6 +336,14 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
             return;
         }
 
+        if (loanJourneyActive && loanJourneyRef.current) {
+            const handled = loanJourneyRef.current.handleVoiceCommand(text);
+            if (handled) {
+                setInput('');
+                return;
+            }
+        }
+
         const isTripRelated = (msg: string): boolean => {
             const t = msg.toLowerCase();
             const words = ['trip', 'travel', 'travelling', 'traveling', 'vacation', 'holiday', 'abroad', 'international', 'overseas', 'foreign', 'flight', 'tour', 'japan', 'dubai', 'thailand', 'singapore', 'varanasi', 'goa', 'kashmir', 'bali', 'europe', 'maldives', 'vietnam', 'sri lanka', 'srilanka'];
@@ -424,14 +432,6 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                 setLoading(false);
             }, 1000);
             return;
-        }
-
-        if (loanJourneyActive && loanJourneyRef.current) {
-            const handled = loanJourneyRef.current.handleVoiceCommand(text);
-            if (handled) {
-                setInput('');
-                return;
-            }
         }
 
         const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text, text };
