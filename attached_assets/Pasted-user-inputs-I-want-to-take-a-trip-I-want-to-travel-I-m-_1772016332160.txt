@@ -1,0 +1,101 @@
+user inputs:
+I want to take a trip
+I want to travel
+I’m planning a trip
+I want to go on a vacation
+I’m thinking of travelling
+I want to plan a trip
+I want to go on a holiday
+Planning a vacation
+Travel planning help
+Help me plan a trip
+I want to travel internationally
+I want to take an international trip
+I’m planning an international vacation
+I want to go abroad
+I want to travel overseas
+Planning an overseas trip
+I’m interested in international travel
+I want to go on a foreign trip
+I want to visit another country
+International travel plans
+I want to plan a family trip
+Planning a family vacation
+I want to travel with my family
+Family holiday planning
+I want to take my family on a trip
+Planning a family international trip
+I want to go abroad with my family
+Family overseas vacation
+Can I plan a trip for my family?
+Family travel planning help
+Can I afford a trip?
+Can I afford to travel?
+Can I afford an international trip?
+Is this trip affordable for me?
+Do I have enough money to travel?
+Can I plan this trip financially?
+Can I manage the cost of a trip?
+How much will a trip cost me?
+Is international travel possible for me now?
+Can I financially plan a vacation?
+How much additional money do I need for a trip?
+How much extra funds are required for travel?
+I need help funding a trip
+How much money will I fall short for travel?
+Do I need extra funds to travel?
+What is the funding gap for this trip?
+Can you tell me how much more money I need?
+I don’t think I have enough money for travel
+How much additional amount is needed for a vacation?
+Do I need financial support for this trip?
+I want to travel soon
+I’m planning a trip this year
+I want to go on a vacation soon
+I’m thinking of travelling in the next few months
+Planning an international trip soon
+I want to travel abroad this year
+I want to go on a holiday soon
+Upcoming travel plans
+I want to plan travel in the near future
+I’m considering travelling soon
+I feel like taking a trip
+I’m thinking about going abroad
+I want to explore another country
+Travel is on my mind
+I want to plan something fun like a trip
+I’ve been thinking of an international vacation
+I want to see the world
+I want to go somewhere outside India
+I want to travel but not sure about money
+I want to plan a trip but unsure if I can afford it
+Can you help me plan a trip?
+Can you help me plan an international vacation?
+Can you tell me if I can afford a trip?
+Can I plan a family international trip?
+How do I plan a trip financially?
+Can you assess my travel plans?
+Can you evaluate my travel budget?
+Can I go abroad with my current finances?
+Can you help me plan travel expenses?
+Is international travel possible for me?
+I want to travel but may need extra money
+I want to plan a trip even if I’m short on funds
+I want to travel and cover the remaining cost
+I want to travel and manage the expenses
+I want to travel without dipping into all my savings
+I want to plan a trip comfortably
+I want to travel without financial stress
+I want to plan an international trip responsibly
+I want to travel even if funds are tight
+I want to travel and handle the shortfall
+I want to take an international trip
+I want to go on an international vacation
+I want to travel internationally soon
+I want to plan an international family trip
+Can I afford an international vacation?
+How much will an international trip cost me?
+Do I have enough money to travel abroad?
+Can I plan an overseas family trip?
+I’m interested in an international trip
+I want to travel internationally and need help planning
