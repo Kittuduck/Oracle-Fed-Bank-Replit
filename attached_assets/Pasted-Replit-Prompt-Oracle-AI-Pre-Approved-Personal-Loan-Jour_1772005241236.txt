@@ -1,0 +1,44 @@
+Replit Prompt: Oracle AI - Pre-Approved Personal Loan Journey
+Project Context:
+Implement a high-end, conversational personal loan journey within the Oracle Federal Bank app. The journey is led entirely by "Oracle" (the AI agent) and is triggered when a user discusses a major financial goal (specifically an international family trip). The design must adhere to Federal Bank’s visual identity (Federal Blue #004d9c, Federal Gold #f37021) and a sleek, "Cred-style" aesthetic.
+
+The Journey Logic: "The Travel Bridge"
+
+Phase 1: Financial Gap Analysis
+
+Trigger: The user asks Oracle about planning an international trip (e.g., "Can I afford a trip to Japan with my family?").
+Oracle Action: Perform a real-time assessment of the user's current liquidity vs. estimated trip costs.
+UI Component: Display a "Trip Feasibility Card" in the chat. Use a visual progress bar or donut chart showing the "Savings" vs. "Shortfall." Oracle should articulate the gap clearly: "You're ₹2,50,000 away from your Japan dream."
+Phase 2: The Pre-Approved Pivot
+
+Oracle Message: "Hello [Username] 👋 Based on your profile and interest in this trip, I've unlocked a pre-approved personal loan offer for you to bridge this gap instantly."
+UI Component: A premium "Offer Surface" within the chat featuring:
+Interest Rate & Processing Fees.
+CIBIL Consent: A mandatory, stylized checkbox: "I authorize Federal Bank to fetch my credit report for this application."
+Phase 3: Interactive Customization
+
+Oracle Action: Once consent is given, Oracle invites the user to "shape the loan."
+UI Component: An "Interactive Loan Modeler" widget inside the chat.
+Sliders: For Loan Amount and Tenure (months).
+Real-time Feedback: The EMI amount should update dynamically as the user slides.
+Acceptance: A high-contrast "Accept Final Offer" button.
+Phase 4: Digital Compliance (The "Fast-Track" Flow)
+
+Step A: Terms & Conditions: A clean, "bullet-point" summary of the agreement with an "Accept" trigger.
+Step B: Aadhaar e-Sign: A simulated secure OTP interface. Oracle guides the user: *"Sending a secure OTP to your Aadhaar-linked mobile (*****5678) to e-sign your agreement."
+Step C: e-NACH Mandate: A visual confirmation card for setting up the auto-repayment mandate from their primary Federal Bank account.
+Phase 5: Disbursement & Tracking
+
+Success State: A celebratory micro-animation (e.g., a "Funds Credited" glow or subtle Federal Gold confetti).
+Oracle Message: "Congratulations! ₹2,50,000 has been credited to your account. Your Japan trip is officially a 'Go'! ✈️"
+Tracking: A "Loan Summary Card" showing the new account number, EMI schedule, and a "Track in Expenditure" link.
+Design & UX Requirements:
+
+Persona Awareness: Oracle’s tone should adapt to the active persona (e.g., more analytical for Rajesh the Business Owner, more encouraging for Ishan the Student).
+Visual Language: Use glassmorphism, soft squircles, and Federal Blue/Gold accents. Avoid walls of text; use icons and bold numbers for key data.
+End-States:
+Successful: Full disbursement flow.
+Unsuccessful/Dropped: If a user declines or fails OTP, Oracle should say: "No problem! This offer is saved in your 'Discover' section if you want to revisit it later."
+Micro-animations: Use subtle transitions (fade-ins, sliding widgets) to make the chat feel responsive and premium.
+Technical Implementation Note:
+Create a LoanJourneyOrchestrator component that manages these states within

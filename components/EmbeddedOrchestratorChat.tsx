@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, ArrowRight, Shield, Zap, Compass, AlertTriangle, TrendingUp, Calendar, CheckCircle2, Sparkles, X, FileUp, Loader2, Check, FileCheck, File, Mic, Volume2 } from 'lucide-react';
 import { chatWithOrchestrator, SimulationUpdateData, NewGoalData } from '../services/geminiService';
 import TradeOffVisualizer from './TradeOffVisualizer';
+import LoanJourneyOrchestrator from './LoanJourneyOrchestrator';
 
 interface EmbeddedOrchestratorChatProps {
     onUpdateSimulation: (data: SimulationUpdateData) => void;
@@ -15,6 +16,7 @@ interface EmbeddedOrchestratorChatProps {
     oracleActive: boolean;
     initialPrompt?: string;
     persona?: any;
+    isDarkMode?: boolean;
 }
 
 interface Message {
@@ -67,7 +69,8 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     onPayCCBill,
     currentFinancials,
     initialPrompt,
-    persona
+    persona,
+    isDarkMode = false
 }) => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -80,6 +83,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     const [selectedFiles, setSelectedFiles] = useState<(File | null)[]>([null, null, null, null]);
     const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
     const [displayedText, setDisplayedText] = useState<{ [key: string]: string }>({});
+    const [loanJourneyActive, setLoanJourneyActive] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         if (e.target.files && e.target.files[0]) {
@@ -300,7 +304,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         if (text === "Pay Credit Card Bill") { onPayCCBill(); return; }
         if (text === "Track Goals" || text === "View Strategic Goals" || text === "View Updated Goals") { onNavigateToGoals(); return; }
         if (text === "Review Portfolio") { onNavigateToPortfolio(); return; }
-        if (text === "Review Expenditure" || text === "Review Anomaly") { onNavigateToExpenditure(); return; }
+        if (text === "Review Expenditure" || text === "Review Anomaly" || text === "Track in Expenditure") { onNavigateToExpenditure(); return; }
 
         if (text === "Windfall Allocation") {
             const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text, text };
@@ -319,6 +323,58 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                 setMessages(prev => [...prev, aiMsg]);
                 setLoading(false);
             }, 800);
+            return;
+        }
+
+        const tripKeywords = /\b(trip|travel|vacation|holiday|abroad|international|japan|dubai|thailand|singapore|varanasi|flight|tour|family trip|afford.*trip|plan.*trip|trip.*plan)\b/i;
+        if (tripKeywords.test(text) && !loanJourneyActive) {
+            const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text, text };
+            setMessages(prev => [...prev, userMsg]);
+            setInput('');
+            setLoading(true);
+            setLoanJourneyActive(true);
+
+            setTimeout(() => {
+                const aiMsg: Message = {
+                    id: (Date.now() + 1).toString(),
+                    role: 'model',
+                    state: 'GUIDANCE',
+                    text: "Travel Bridge - Loan Journey",
+                    content: (
+                        <LoanJourneyOrchestrator
+                            persona={persona}
+                            isDarkMode={isDarkMode}
+                            currentFinancials={currentFinancials}
+                            onComplete={(loanData) => {
+                                setLoanJourneyActive(false);
+                                const successMsg: Message = {
+                                    id: (Date.now() + 2).toString(),
+                                    role: 'model',
+                                    state: 'AUTONOMY',
+                                    text: `Loan of ${loanData.amount.toLocaleString('en-IN')} disbursed successfully.`,
+                                    content: <p className="text-xs">Your loan has been disbursed. EMI of ₹{loanData.emi.toLocaleString('en-IN')}/month starts from 5th April 2026.</p>,
+                                    actions: ['Track in Expenditure', 'View Dashboard']
+                                };
+                                setMessages(prev => [...prev, successMsg]);
+                            }}
+                            onDismiss={() => {
+                                setLoanJourneyActive(false);
+                                const dismissMsg: Message = {
+                                    id: (Date.now() + 3).toString(),
+                                    role: 'model',
+                                    state: 'GUIDANCE',
+                                    text: "No problem! This offer is saved in your 'Discover' section if you want to revisit it later.",
+                                    content: <p>No problem! This offer is saved in your <strong>'Discover'</strong> section if you want to revisit it later.</p>,
+                                    actions: ['View Dashboard', 'Track Goals']
+                                };
+                                setMessages(prev => [...prev, dismissMsg]);
+                            }}
+                        />
+                    )
+                };
+                setMessages(prev => [...prev, aiMsg]);
+                setLoading(false);
+            }, 1000);
             return;
         }
 

@@ -432,6 +432,7 @@ const App: React.FC = () => {
                             oracleActive={oracleActive}
                             initialPrompt={oraclePrompt}
                             persona={selectedPersona}
+                            isDarkMode={isDarkMode}
                         />
                     </div>
                 </div>
