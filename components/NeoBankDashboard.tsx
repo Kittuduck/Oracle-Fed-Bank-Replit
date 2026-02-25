@@ -15,7 +15,7 @@ import {
     TrendingUp, CheckCircle2, AlertTriangle, GraduationCap,
     PlusCircle, X, Target, Plus, EyeOff, ShieldCheck, StopCircle, Search, UserPlus, ArrowRight,
     Home, PieChart, BarChart3, Gift, Laptop, HeartPulse, Cpu, Globe, ArrowUpRight, Circle,
-    FileText, Users, Heart, Receipt, PiggyBank, Flame, ScanLine
+    FileText, Users, Heart, Receipt, PiggyBank, Flame, ScanLine, Plane
 } from 'lucide-react';
 import { Biller } from '../App';
 import GrowthEngine from './GrowthEngine';
@@ -69,6 +69,7 @@ interface NeoBankDashboardProps {
     setFestival: (f: 'DEFAULT' | 'DIWALI' | 'HOLI') => void;
     persona?: PersonaProfile | null;
     onResetPersona?: () => void;
+    activeLoan?: { amount: number; emi: number; tenure: number; rate: number; destination?: string } | null;
 }
 
 const iconMap: Record<string, any> = {
@@ -97,6 +98,7 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
     setFestival,
     persona,
     onResetPersona,
+    activeLoan,
 }) => {
     const totalBalance = persona ? persona.financials.liquid : currentFinancials.liquid;
     const [showCardDetails, setShowCardDetails] = React.useState(false);
@@ -383,6 +385,39 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                         />
                     </div>
                 </div>
+                )}
+
+                {activeLoan && (
+                    <div className="space-y-4 pt-2">
+                        <div className="flex justify-between items-center px-1">
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none tracking-tight">Active Loan</h3>
+                            <button
+                                onClick={() => onNavigate('LOANS')}
+                                className="text-xs font-bold text-federalblue-900 dark:text-federalblue-400 hover:underline flex items-center gap-1"
+                            >
+                                View Details <ArrowRight className="w-3 h-3" />
+                            </button>
+                        </div>
+                        <div
+                            onClick={() => onNavigate('LOANS')}
+                            className="glass-card rounded-[1.75rem] border border-emerald-200 dark:border-emerald-800/30 overflow-hidden cursor-pointer hover:shadow-md transition-all"
+                        >
+                            <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 flex items-center gap-3">
+                                <Plane className="w-4 h-4 text-white" />
+                                <span className="text-xs font-bold text-white tracking-wide">Travel Bridge — {activeLoan.destination || 'Trip'}</span>
+                            </div>
+                            <div className="px-5 py-4 flex items-center justify-between">
+                                <div>
+                                    <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest">Loan Amount</p>
+                                    <p className="text-lg font-bold text-zinc-900 dark:text-white">₹{activeLoan.amount.toLocaleString('en-IN')}</p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest">EMI</p>
+                                    <p className="text-lg font-bold text-federalblue-900 dark:text-federalblue-400">₹{activeLoan.emi.toLocaleString('en-IN')}<span className="text-[10px] font-normal text-slate-400 dark:text-zinc-500">/mo</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 )}
 
                 {/* --- Recent Transactions --- */}

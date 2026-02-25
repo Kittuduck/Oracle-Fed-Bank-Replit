@@ -12,17 +12,28 @@ import {
     CheckCircle2,
     Info,
     ShieldCheck,
-    Zap
+    Zap,
+    Plane
 } from 'lucide-react';
+
+interface ActiveTravelLoan {
+    amount: number;
+    emi: number;
+    tenure: number;
+    rate: number;
+    destination?: string;
+}
 
 interface LoansHubProps {
     onBack: () => void;
     onApplyLoan: (type: string, amount: number) => void;
     isDarkMode: boolean;
     festival: 'DEFAULT' | 'DIWALI' | 'HOLI';
+    activeTravelLoan?: ActiveTravelLoan | null;
+    persona?: any;
 }
 
-const LoansHub: React.FC<LoansHubProps> = ({ onBack, onApplyLoan, isDarkMode, festival }) => {
+const LoansHub: React.FC<LoansHubProps> = ({ onBack, onApplyLoan, isDarkMode, festival, activeTravelLoan, persona }) => {
     const [view, setView] = useState<'MAIN' | 'APPLY_LOAN' | 'SUCCESS'>('MAIN');
     const [loanType, setLoanType] = useState<string | null>(null);
     const [loanAmount, setLoanAmount] = useState('');
@@ -189,6 +200,51 @@ const LoansHub: React.FC<LoansHubProps> = ({ onBack, onApplyLoan, isDarkMode, fe
                     </div>
                     <div className="absolute top-0 right-0 w-48 h-48 bg-federalgold-500/5 -mr-16 -mt-16 rounded-full blur-3xl" />
                 </div>
+
+                {activeTravelLoan && (
+                    <div className="space-y-4">
+                        <h3 className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest ml-1">Active Loans</h3>
+                        <div className={`rounded-2xl border overflow-hidden ${isDarkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-100 shadow-sm'}`}>
+                            <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-4 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                                        <Plane className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] text-emerald-100 font-bold uppercase tracking-widest">Travel Bridge Loan</p>
+                                        <p className="text-lg font-bold text-white">{activeTravelLoan.destination || 'Travel'} Trip</p>
+                                    </div>
+                                </div>
+                                <CheckCircle2 className="w-5 h-5 text-emerald-200" />
+                            </div>
+                            <div className="p-4 space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <p className={`text-[10px] uppercase tracking-wider font-bold ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Loan Amount</p>
+                                        <p className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>₹{activeTravelLoan.amount.toLocaleString('en-IN')}</p>
+                                    </div>
+                                    <div>
+                                        <p className={`text-[10px] uppercase tracking-wider font-bold ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Monthly EMI</p>
+                                        <p className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>₹{activeTravelLoan.emi.toLocaleString('en-IN')}</p>
+                                    </div>
+                                    <div>
+                                        <p className={`text-[10px] uppercase tracking-wider font-bold ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Tenure</p>
+                                        <p className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{activeTravelLoan.tenure} months</p>
+                                    </div>
+                                    <div>
+                                        <p className={`text-[10px] uppercase tracking-wider font-bold ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Interest Rate</p>
+                                        <p className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{activeTravelLoan.rate}% p.a.</p>
+                                    </div>
+                                </div>
+                                <div className={`h-px ${isDarkMode ? 'bg-zinc-800' : 'bg-slate-100'}`} />
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className={isDarkMode ? 'text-zinc-400' : 'text-slate-500'}>Next EMI: 5th April 2026</span>
+                                    <span className="text-emerald-600 font-bold">On Track</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <div className="space-y-4">
                     <h3 className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest ml-1">Lending Products</h3>

@@ -45,6 +45,7 @@ const App: React.FC = () => {
     const [festival, setFestival] = useState<'DEFAULT' | 'DIWALI' | 'HOLI'>('DEFAULT');
     const [transferPrefill, setTransferPrefill] = useState<{ recipient: string, amount: string } | null>(null);
     const [oraclePrompt, setOraclePrompt] = useState<string>('');
+    const [activeLoan, setActiveLoan] = useState<{ amount: number; emi: number; tenure: number; rate: number; destination?: string } | null>(null);
 
     const handlePersonaSelect = (persona: PersonaProfile) => {
         setSelectedPersona(persona);
@@ -271,6 +272,8 @@ const App: React.FC = () => {
                     onApplyLoan={handleLoanDisbursal}
                     isDarkMode={isDarkMode}
                     festival={festival}
+                    activeTravelLoan={activeLoan}
+                    persona={selectedPersona}
                 />
             );
         }
@@ -428,6 +431,8 @@ const App: React.FC = () => {
                             onNavigateToExpenditure={() => setView('EXPENDITURE')}
                             onNavigateToDashboard={() => setView('DASHBOARD')}
                             onPayCCBill={handlePayCreditCardBill}
+                            onNavigate={(page: string) => setView(page as any)}
+                            onLoanDisbursed={(loanData) => setActiveLoan(loanData)}
                             currentFinancials={currentFinancials}
                             oracleActive={oracleActive}
                             initialPrompt={oraclePrompt}
@@ -568,6 +573,7 @@ const App: React.FC = () => {
                 setFestival={setFestival}
                 persona={selectedPersona}
                 onResetPersona={handleResetPersona}
+                activeLoan={activeLoan}
             />
         );
     };

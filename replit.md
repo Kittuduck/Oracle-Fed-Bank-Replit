@@ -38,11 +38,14 @@ A premium, AI-first multi-persona banking application for Federal Bank called "O
 - `components/LoanJourneyOrchestrator.tsx` - 6-phase loan journey state machine
 - Triggered in Oracle AI chat when user mentions trip/travel/vacation keywords
 - **Conversational Intake**: Oracle asks step-by-step (destination → travelers & duration → cities & interests) before any analysis
+- **Itinerary Upload**: Users can upload a pre-made itinerary (PDF, PNG, JPG, DOCX, TXT — max 5MB) to skip manual entry; persona-aware extraction
+- **Free Text Notes**: Additional details field on cities/interests step for custom preferences
 - Supports 12 pre-configured destinations (Japan, Thailand, Dubai, Singapore, Bali, Europe, Maldives, Vietnam, Sri Lanka, Varanasi, Goa, Kashmir) + custom destinations
 - Dynamic cost calculation based on user-provided travelers, duration, cities
 - Uses real-time `currentFinancials.liquid` for gap analysis
 - EMI calculated with standard amortization formula at 10.49% p.a.
 - Simulated Aadhaar OTP and e-NACH mandate flows
+- **Loan Tracking**: After disbursement, loan appears on Dashboard (Active Loan card) and Loans Hub (detailed tracker with EMI schedule); navigation from disbursement screen to either Expenditure or Loans page
 
 ### Key Files
 - `index.html` - Entry HTML with Tailwind config and import maps

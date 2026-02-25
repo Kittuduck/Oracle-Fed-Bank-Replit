@@ -4,7 +4,7 @@ import {
   IndianRupee, Calendar, Lock, FileText, ArrowRight, PartyPopper,
   CreditCard, Building2, Fingerprint, Smartphone, Check, X, Clock,
   AlertCircle, Wallet, BarChart3, DollarSign, MapPin, Users, Globe,
-  Compass, Sun, Send
+  Compass, Sun, Send, Upload, FileUp, Loader2, MessageSquare
 } from 'lucide-react';
 
 interface LoanJourneyProps {
@@ -12,6 +12,7 @@ interface LoanJourneyProps {
   isDarkMode: boolean;
   onComplete: (loanData: LoanData) => void;
   onDismiss: () => void;
+  onNavigate?: (page: string) => void;
   currentFinancials: { liquid: number; need: number; goal: number };
 }
 
@@ -21,6 +22,7 @@ interface LoanData {
   emi: number;
   rate: number;
   accountNumber: string;
+  destination?: string;
 }
 
 interface TripDetails {
@@ -94,6 +96,7 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
   isDarkMode,
   onComplete,
   onDismiss,
+  onNavigate,
   currentFinancials
 }) => {
   const [phase, setPhase] = useState<Phase>('INTAKE');
@@ -111,6 +114,7 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
   const [disbursed, setDisbursed] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedDestination, setSelectedDestination] = useState('');
   const [travelerCount, setTravelerCount] = useState(2);
@@ -119,6 +123,11 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [customDestination, setCustomDestination] = useState('');
   const [tripDetails, setTripDetails] = useState<TripDetails | null>(null);
+  const [additionalNotes, setAdditionalNotes] = useState('');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [itineraryParsing, setItineraryParsing] = useState(false);
+  const [itineraryParsed, setItineraryParsed] = useState(false);
+  const [itinerarySummary, setItinerarySummary] = useState('');
 
   const tone = getPersonaTone(persona);
   const rate = 10.49;
@@ -131,14 +140,57 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
     return () => clearTimeout(timer);
   }, [phase, intakeStep, complianceStep]);
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const maxSize = 5 * 1024 * 1024;
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg', 'text/plain',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedExtensions = ['.pdf', '.png', '.jpg', '.jpeg', '.txt', '.docx'];
+    const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+
+    if (file.size > maxSize) {
+      alert('File size must be under 5MB');
+      return;
+    }
+    if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(ext)) {
+      alert('Please upload a PDF, image (PNG/JPG), TXT, or DOCX file');
+      return;
+    }
+
+    setUploadedFile(file);
+    setItineraryParsing(true);
+
+    setTimeout(() => {
+      const personaId = persona?.id || 'advait';
+      const defaultDest = personaId === 'kapoor' ? 'Varanasi' : personaId === 'rajesh' ? 'Dubai' : personaId === 'ishan' ? 'Thailand' : personaId === 'anjali' ? 'Singapore' : 'Japan';
+      const destData = DESTINATIONS[defaultDest] || DESTINATIONS['Japan'];
+
+      setSelectedDestination(defaultDest);
+      setTravelerCount(personaId === 'anjali' ? 4 : personaId === 'advait' ? 3 : personaId === 'ishan' ? 4 : 2);
+      setTripDays(personaId === 'kapoor' ? 5 : personaId === 'ishan' ? 8 : 10);
+      const cities = CITY_SUGGESTIONS[defaultDest]?.slice(0, 3) || ['City Center', 'Old Town'];
+      setSelectedCities(cities);
+      setSelectedInterests(['Culture & History', 'Food & Cuisine']);
+
+      setItinerarySummary(`Extracted from "${file.name}": ${defaultDest} trip for ${personaId === 'anjali' ? 4 : personaId === 'advait' ? 3 : personaId === 'ishan' ? 4 : 2} travelers, ${personaId === 'kapoor' ? 5 : personaId === 'ishan' ? 8 : 10} days covering ${cities.join(', ')}.`);
+      setItineraryParsing(false);
+      setItineraryParsed(true);
+    }, 2500);
+  };
+
   const buildTripDetails = (): TripDetails => {
     const dest = selectedDestination || 'Japan';
     const destData = DESTINATIONS[dest] || DESTINATIONS['Japan'];
     const flightCost = destData.flightBase * travelerCount;
     const dailyCost = destData.perPersonPerDay * travelerCount;
     const hotelCost = Math.round(dailyCost * 0.4 * tripDays);
-    const activityCost = Math.round(dailyCost * 0.25 * tripDays * (1 + selectedCities.length * 0.05));
-    const foodCost = Math.round(dailyCost * 0.2 * tripDays);
+    const hasLuxuryInterests = selectedInterests.some(i => ['Relaxation & Spa', 'Shopping', 'Nightlife'].includes(i));
+    const interestMultiplier = hasLuxuryInterests ? 1.15 : 1;
+    const notesMultiplier = additionalNotes.length > 0 ? 1.05 : 1;
+    const activityCost = Math.round(dailyCost * 0.25 * tripDays * (1 + selectedCities.length * 0.05) * interestMultiplier * notesMultiplier);
+    const foodCost = Math.round(dailyCost * 0.2 * tripDays * (selectedInterests.includes('Food & Cuisine') ? 1.1 : 1));
     const visaCost = destData.visaCost * travelerCount;
     const totalCost = flightCost + hotelCost + activityCost + foodCost + visaCost;
 
@@ -218,7 +270,8 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
       tenure,
       emi,
       rate,
-      accountNumber: 'XXXX XXXX 4821'
+      accountNumber: 'XXXX XXXX 4821',
+      destination: tripDetails?.destination || selectedDestination
     });
   };
 
@@ -253,36 +306,94 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
             That sounds exciting, {tone.greeting}! ✈️ I'd love to help you plan this. Let me understand your trip first — <strong>where are you thinking of going?</strong>
           </p>
 
-          <div className="mt-4">
-            <p className={labelClass}>Popular Destinations</p>
-            <div className="flex flex-wrap gap-2">
-              {Object.entries(DESTINATIONS).map(([name, data]) => (
-                <button
-                  key={name}
-                  onClick={() => setSelectedDestination(name)}
-                  className={chipClass(selectedDestination === name)}
-                >
-                  {data.emoji} {name}
-                </button>
-              ))}
-            </div>
+          <div className={`mt-4 rounded-xl border-2 border-dashed p-4 text-center transition-all ${
+            itineraryParsed
+              ? (isDarkMode ? 'border-emerald-700 bg-emerald-900/10' : 'border-emerald-300 bg-emerald-50')
+              : itineraryParsing
+                ? (isDarkMode ? 'border-federalblue-700 bg-federalblue-900/10' : 'border-federalblue-300 bg-federalblue-50')
+                : (isDarkMode ? 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-500' : 'border-slate-200 bg-slate-50 hover:border-slate-400')
+          }`}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.png,.jpg,.jpeg,.txt,.docx"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
 
-            <div className="mt-3">
-              <div className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 ${isDarkMode ? 'bg-zinc-800 border-zinc-700' : 'bg-slate-50 border-slate-200'}`}>
-                <MapPin className={`w-3.5 h-3.5 flex-shrink-0 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`} />
-                <input
-                  type="text"
-                  placeholder="Or type a different destination..."
-                  value={customDestination}
-                  onChange={e => { setCustomDestination(e.target.value); if (e.target.value) setSelectedDestination(''); }}
-                  className={`flex-1 bg-transparent text-xs outline-none ${isDarkMode ? 'text-white placeholder-zinc-600' : 'text-slate-900 placeholder-slate-400'}`}
-                />
+            {itineraryParsing ? (
+              <div className="py-3">
+                <Loader2 className={`w-6 h-6 mx-auto mb-2 animate-spin ${isDarkMode ? 'text-federalblue-400' : 'text-federalblue-600'}`} />
+                <p className={`text-xs font-semibold ${isDarkMode ? 'text-zinc-300' : 'text-slate-600'}`}>Parsing your itinerary...</p>
+                <p className={`text-[10px] mt-1 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Extracting destination, travelers, duration & cities</p>
               </div>
-            </div>
+            ) : itineraryParsed ? (
+              <div className="py-2">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                  <span className={`text-xs font-bold ${isDarkMode ? 'text-emerald-400' : 'text-emerald-700'}`}>Itinerary Parsed</span>
+                </div>
+                <p className={`text-[11px] ${isDarkMode ? 'text-zinc-400' : 'text-slate-500'}`}>{itinerarySummary}</p>
+                <button
+                  onClick={() => { setUploadedFile(null); setItineraryParsed(false); setItinerarySummary(''); }}
+                  className={`mt-2 text-[10px] font-semibold ${isDarkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-400 hover:text-slate-600'}`}
+                >
+                  Remove & choose manually
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => fileInputRef.current?.click()} className="w-full py-3">
+                <Upload className={`w-6 h-6 mx-auto mb-2 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`} />
+                <p className={`text-xs font-semibold ${isDarkMode ? 'text-zinc-300' : 'text-slate-600'}`}>Have a ready itinerary? Upload it</p>
+                <p className={`text-[10px] mt-1 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>PDF, PNG, JPG, DOCX or TXT — max 5MB</p>
+              </button>
+            )}
           </div>
+
+          {!itineraryParsed && !itineraryParsing && (
+            <>
+              <div className={`flex items-center gap-3 my-4 ${isDarkMode ? 'text-zinc-600' : 'text-slate-300'}`}>
+                <div className="flex-1 h-px bg-current" />
+                <span className="text-[10px] font-bold uppercase tracking-widest">Or choose below</span>
+                <div className="flex-1 h-px bg-current" />
+              </div>
+
+              <div>
+                <p className={labelClass}>Popular Destinations</p>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(DESTINATIONS).map(([name, data]) => (
+                    <button
+                      key={name}
+                      onClick={() => setSelectedDestination(name)}
+                      className={chipClass(selectedDestination === name)}
+                    >
+                      {data.emoji} {name}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-3">
+                  <div className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 ${isDarkMode ? 'bg-zinc-800 border-zinc-700' : 'bg-slate-50 border-slate-200'}`}>
+                    <MapPin className={`w-3.5 h-3.5 flex-shrink-0 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`} />
+                    <input
+                      type="text"
+                      placeholder="Or type a different destination..."
+                      value={customDestination}
+                      onChange={e => { setCustomDestination(e.target.value); if (e.target.value) setSelectedDestination(''); }}
+                      className={`flex-1 bg-transparent text-xs outline-none ${isDarkMode ? 'text-white placeholder-zinc-600' : 'text-slate-900 placeholder-slate-400'}`}
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           <button
             onClick={() => {
+              if (itineraryParsed) {
+                startAnalysis();
+                return;
+              }
               if (customDestination && !selectedDestination) {
                 const match = Object.keys(DESTINATIONS).find(d => d.toLowerCase() === customDestination.toLowerCase());
                 setSelectedDestination(match || customDestination);
@@ -293,10 +404,10 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
               }
               setIntakeStep('TRAVELERS');
             }}
-            disabled={!selectedDestination && !customDestination}
+            disabled={!selectedDestination && !customDestination && !itineraryParsed}
             className="w-full mt-4 py-3 bg-federalblue-900 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Continue <ArrowRight className="w-4 h-4" />
+            {itineraryParsed ? <><Sparkles className="w-4 h-4" /> Analyze My Trip</> : <>Continue <ArrowRight className="w-4 h-4" /></>}
           </button>
         </div>
       )}
@@ -405,6 +516,23 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <p className={labelClass}>
+                <MessageSquare className="w-3 h-3 inline mr-1" /> Anything Else?
+              </p>
+              <textarea
+                value={additionalNotes}
+                onChange={e => setAdditionalNotes(e.target.value)}
+                placeholder={`e.g. "We want to try street food in ${selectedDestination}", "Need wheelchair-accessible hotels", "Budget-friendly options preferred"...`}
+                rows={3}
+                className={`w-full rounded-xl border px-3 py-2.5 text-xs resize-none outline-none transition-all ${
+                  isDarkMode
+                    ? 'bg-zinc-800 border-zinc-700 text-white placeholder-zinc-600 focus:border-federalblue-500'
+                    : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-federalblue-500'
+                }`}
+              />
             </div>
           </div>
 
@@ -934,12 +1062,20 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
           </div>
         </div>
 
-        <button
-          onClick={onDismiss}
-          className={`w-full py-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-all ${isDarkMode ? 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-        >
-          Track in Expenditure <ArrowRight className="w-3 h-3" />
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => { onDismiss(); onNavigate?.('EXPENDITURE'); }}
+            className={`flex-1 py-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-all ${isDarkMode ? 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+          >
+            Track in Expenditure <ArrowRight className="w-3 h-3" />
+          </button>
+          <button
+            onClick={() => { onDismiss(); onNavigate?.('LOANS'); }}
+            className="flex-1 py-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-all bg-federalblue-900 text-white hover:opacity-90"
+          >
+            View My Loans <ArrowRight className="w-3 h-3" />
+          </button>
+        </div>
       </div>
     );
   };

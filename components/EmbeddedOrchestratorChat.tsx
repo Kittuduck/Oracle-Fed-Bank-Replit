@@ -12,6 +12,8 @@ interface EmbeddedOrchestratorChatProps {
     onNavigateToExpenditure: () => void;
     onNavigateToDashboard: () => void;
     onPayCCBill: () => void;
+    onNavigate?: (page: string) => void;
+    onLoanDisbursed?: (loanData: { amount: number; emi: number; tenure: number; rate: number; destination?: string }) => void;
     currentFinancials: { liquid: number, need: number, goal: number };
     oracleActive: boolean;
     initialPrompt?: string;
@@ -67,6 +69,8 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     onNavigateToExpenditure,
     onNavigateToDashboard,
     onPayCCBill,
+    onNavigate,
+    onLoanDisbursed,
     currentFinancials,
     initialPrompt,
     persona,
@@ -305,6 +309,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
         if (text === "Track Goals" || text === "View Strategic Goals" || text === "View Updated Goals") { onNavigateToGoals(); return; }
         if (text === "Review Portfolio") { onNavigateToPortfolio(); return; }
         if (text === "Review Expenditure" || text === "Review Anomaly" || text === "Track in Expenditure") { onNavigateToExpenditure(); return; }
+        if (text === "View My Loans") { onNavigate?.('LOANS'); return; }
 
         if (text === "Windfall Allocation") {
             const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text, text };
@@ -345,15 +350,23 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                             persona={persona}
                             isDarkMode={isDarkMode}
                             currentFinancials={currentFinancials}
+                            onNavigate={onNavigate}
                             onComplete={(loanData) => {
                                 setLoanJourneyActive(false);
+                                onLoanDisbursed?.({
+                                    amount: loanData.amount,
+                                    emi: loanData.emi,
+                                    tenure: loanData.tenure,
+                                    rate: loanData.rate,
+                                    destination: loanData.destination
+                                });
                                 const successMsg: Message = {
                                     id: (Date.now() + 2).toString(),
                                     role: 'model',
                                     state: 'AUTONOMY',
                                     text: `Loan of ${loanData.amount.toLocaleString('en-IN')} disbursed successfully.`,
                                     content: <p className="text-xs">Your loan has been disbursed. EMI of ₹{loanData.emi.toLocaleString('en-IN')}/month starts from 5th April 2026.</p>,
-                                    actions: ['Track in Expenditure', 'View Dashboard']
+                                    actions: ['Track in Expenditure', 'View My Loans', 'View Dashboard']
                                 };
                                 setMessages(prev => [...prev, successMsg]);
                             }}
