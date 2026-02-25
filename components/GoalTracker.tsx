@@ -129,7 +129,7 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
 
     return (
         <>
-            <div className={`grid grid-cols-1 gap-8 pb-20 transition-all duration-700 ${isDarkMode ? 'dark text-zinc-100' : 'text-[#333333]'} ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''}`}>
+            <div className={`grid grid-cols-1 gap-5 sm:gap-8 pb-20 transition-all duration-700 ${isDarkMode ? 'dark text-zinc-100' : 'text-[#333333]'} ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''}`}>
                 {goals.map((goal) => {
                     const progress = goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0;
                     const isFIRE = goal.id === 'g1';
@@ -138,48 +138,48 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                     return (
                         <div
                             key={goal.id}
-                            className="group bg-white dark:bg-[#15161a] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 transition-all duration-300 shadow-federal dark:shadow-none relative overflow-hidden"
+                            className="group bg-white dark:bg-[#15161a] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-8 transition-all duration-300 shadow-federal dark:shadow-none relative overflow-hidden"
                         >
                             {/* Federal Blue Abstract Glow */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-federalblue-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
 
-                            <div className="flex flex-col lg:flex-row gap-8">
+                            <div className="flex flex-col gap-5 sm:gap-8">
                                 {/* Left Section: Goal Info & Progress */}
-                                <div className="flex-1 space-y-6">
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex items-center gap-4">
-                                            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#1c1e24] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
-                                                <goal.icon className="w-6 h-6" />
+                                <div className="space-y-4 sm:space-y-6">
+                                    <div className="flex justify-between items-start gap-3">
+                                        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                                            <div className="p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-50 dark:bg-[#1c1e24] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 flex-shrink-0">
+                                                <goal.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                                             </div>
-                                            <div>
-                                                <h3 className="text-xl font-bold text-federalblue-900 dark:text-white tracking-tight">{goal.title}</h3>
-                                                <p className="text-xs text-slate-500 font-medium">Target Year: {isFIRE && selectedRetireAge === 55 ? 2045 : isFIRE && selectedRetireAge === 60 ? 2050 : goal.deadlineYear}</p>
+                                            <div className="min-w-0">
+                                                <h3 className="text-sm sm:text-xl font-bold text-federalblue-900 dark:text-white tracking-tight">{goal.title}</h3>
+                                                <p className="text-[10px] sm:text-xs text-slate-500 font-medium">Target Year: {isFIRE && selectedRetireAge === 55 ? 2045 : isFIRE && selectedRetireAge === 60 ? 2050 : goal.deadlineYear}</p>
                                             </div>
                                         </div>
                                         <button
                                             onClick={() => startEditing(goal)}
-                                            className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-federalblue-900 dark:hover:text-white transition-all border border-slate-200 dark:border-slate-700"
+                                            className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-federalblue-900 dark:hover:text-white transition-all border border-slate-200 dark:border-slate-700 flex-shrink-0"
                                         >
-                                            <Pencil className="w-4 h-4" />
+                                            <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                         </button>
                                     </div>
 
-                                    <div className="flex items-center gap-3 h-6">
-                                        <div className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-widest border uppercase shrink-0 ${getStatusColor(goal.status)}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`inline-flex items-center px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-widest border uppercase shrink-0 ${getStatusColor(goal.status)}`}>
                                             {goal.status === 'REBALANCED' || goal.status === 'ON_TRACK' ? 'ON TRACK' : goal.status.replace('_', ' ')}
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <div className="flex justify-between items-end">
-                                            <div className="text-3xl font-bold text-[#333333] dark:text-white tracking-tighter">
+                                        <div className="flex justify-between items-end gap-2">
+                                            <div className="text-xl sm:text-3xl font-bold text-[#333333] dark:text-white tracking-tighter">
                                                 {formatCurrency(goal.currentAmount)}
                                             </div>
-                                            <div className="text-xs text-slate-500 font-bold">
+                                            <div className="text-[10px] sm:text-xs text-slate-500 font-bold flex-shrink-0">
                                                 Goal: {formatCurrency(isFIRE ? retireMetrics?.corpus! : goal.targetAmount)}
                                             </div>
                                         </div>
-                                        <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div className="h-1.5 sm:h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                                             <div
                                                 className={`h-full rounded-full transition-all duration-1000 ease-out ${goal.status === 'AT_RISK' ? 'bg-federalgold-500' : 'bg-emerald-500'}`}
                                                 style={{ width: `${progress}%` }}
@@ -189,7 +189,7 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                                 </div>
 
                                 {/* Right Section: Oracle Panel */}
-                                <div className="flex-1 bg-slate-50 dark:bg-[#0b0c10]/40 rounded-3xl p-6 border border-slate-100 dark:border-slate-800/50 flex flex-col justify-between">
+                                <div className="bg-slate-50 dark:bg-[#0b0c10]/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-100 dark:border-slate-800/50 flex flex-col justify-between">
                                     <div>
                                         <div className="flex items-center gap-2 mb-4">
                                             <Sparkles className="w-4 h-4 text-federalblue-600 dark:text-federalblue-400" />
@@ -279,9 +279,9 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                                         )}
                                     </div>
 
-                                    <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Funding: {goal.fundingSource}</span>
-                                        <span className={`text-[10px] font-bold ${goal.projectedimpact?.toLowerCase().includes('shortfall') ? 'text-federalgold-500' : 'text-emerald-500'}`}>
+                                    <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+                                        <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">Funding: {goal.fundingSource}</span>
+                                        <span className={`text-[9px] sm:text-[10px] font-bold flex-shrink-0 ${goal.projectedimpact?.toLowerCase().includes('shortfall') ? 'text-federalgold-500' : 'text-emerald-500'}`}>
                                             {goal.projectedimpact?.startsWith('+') ? goal.projectedimpact : `+${goal.projectedimpact}`}
                                         </span>
                                     </div>
@@ -321,7 +321,7 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                             </button>
                         </div>
 
-                        <div className="p-8 overflow-y-auto space-y-8">
+                        <div className="p-4 sm:p-8 overflow-y-auto space-y-6 sm:space-y-8">
                             <div className="space-y-4">
                                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Risk Analysis</h4>
                                 <div className="p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-500/20 rounded-2xl flex gap-3">
@@ -366,8 +366,8 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                             </div>
                         </div>
 
-                        <div className="p-8 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0b0c10] flex gap-4">
-                            <button onClick={() => setShowFullReport(false)} className="flex-1 py-4 text-sm font-bold text-slate-500 hover:text-slate-900">Cancel</button>
+                        <div className="p-4 sm:p-8 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0b0c10] flex gap-4">
+                            <button onClick={() => setShowFullReport(false)} className="flex-1 py-3 sm:py-4 text-sm font-bold text-slate-500 hover:text-slate-900">Cancel</button>
                             <button
                                 onClick={executeStrategy}
                                 className="flex-[2] py-4 bg-federalblue-900 dark:bg-white text-white dark:text-federalblue-900 font-bold rounded-2xl hover:opacity-90 flex items-center justify-center gap-2"

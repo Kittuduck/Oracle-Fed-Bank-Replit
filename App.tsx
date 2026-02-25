@@ -533,7 +533,7 @@ const App: React.FC = () => {
                             </button>
                         </div>
                     </nav>
-                    <main className="max-w-6xl mx-auto px-6 py-10">
+                    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
                         <GoalTracker
                             goals={goals}
                             onAddGoal={handleAddGoal}
