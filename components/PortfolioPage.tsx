@@ -312,22 +312,22 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                 </nav>
 
                 <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 pb-20">
-                    {/* Summary Card */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                        <div className="lg:col-span-2 bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm relative overflow-hidden group">
-                            {/* Decoration */}
+                    {/* Summary + Allocation */}
+                    <div className="space-y-4 sm:space-y-6">
+                        {/* Portfolio Value Card */}
+                        <div className="bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-federalblue-900/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
                             <div className="relative z-10 flex flex-col justify-between h-full">
-                                <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
-                                    <div className="min-w-0 flex-1">
+                                <div className="flex justify-between items-start mb-4 sm:mb-6 gap-3">
+                                    <div className="min-w-0">
                                         <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Portfolio Value</p>
-                                        <h2 className="text-xl sm:text-4xl font-light text-[#333333] dark:text-white tracking-tight">
-                                            {pData.displayValue}<span className="text-slate-400 text-sm sm:text-2xl">.00</span>
+                                        <h2 className="text-2xl sm:text-4xl font-light text-[#333333] dark:text-white tracking-tight whitespace-nowrap">
+                                            {pData.displayValue}<span className="text-slate-400 text-base sm:text-2xl">.00</span>
                                         </h2>
                                     </div>
                                     <div className="flex flex-col items-end flex-shrink-0">
-                                        <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 sm:px-2.5 py-1 rounded-md text-[10px] sm:text-sm font-bold">
+                                        <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 sm:px-2.5 py-1 rounded-md text-[10px] sm:text-sm font-bold whitespace-nowrap">
                                             <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
                                             +{portfolioSummary.returnsPercentage}%
                                         </span>
@@ -352,12 +352,11 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                         </div>
 
                         {/* Allocation Chart Card */}
-                        <div className="bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm flex flex-col h-full relative overflow-hidden">
+                        <div className="bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm flex flex-col relative overflow-hidden">
                             <h3 className="text-sm font-bold text-[#333333] dark:text-white mb-2 z-10 relative">Asset Allocation</h3>
 
-                            <div className="flex items-center justify-between flex-1 min-h-[180px] relative z-10">
-                                {/* Chart Section - Left */}
-                                <div className="relative w-[50%] sm:w-[55%] h-[180px] sm:h-[200px] flex items-center justify-center">
+                            <div className="flex items-center justify-center sm:justify-between flex-1 min-h-[200px] relative z-10">
+                                <div className="relative w-[55%] sm:w-[50%] h-[200px] flex items-center justify-center">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <RePieChart>
                                             <Pie
@@ -422,18 +421,18 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                                 </div>
 
                                 {/* Legend Section - Right Side */}
-                                <div className="flex flex-col justify-center gap-2 sm:gap-3 w-[46%] sm:w-[40%] pl-1 sm:pl-2">
+                                <div className="flex flex-col justify-center gap-2.5 sm:gap-3 w-[42%] sm:w-[45%] pl-2 sm:pl-4">
                                     {allocationData.map((item, index) => (
                                         <div
                                             key={item.name}
-                                            className={`flex items-center gap-1.5 sm:gap-2 transition-opacity duration-300 group cursor-default ${activeIndex !== undefined && activeIndex !== index ? 'opacity-40' : 'opacity-100'}`}
+                                            className={`flex items-center gap-2 sm:gap-2.5 transition-opacity duration-300 group cursor-default ${activeIndex !== undefined && activeIndex !== index ? 'opacity-40' : 'opacity-100'}`}
                                             onMouseEnter={() => setActiveIndex(index)}
                                             onMouseLeave={() => setActiveIndex(undefined)}
                                         >
-                                            <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm flex-shrink-0" style={{ backgroundColor: item.color }}></div>
-                                            <div className="flex flex-col min-w-0">
-                                                <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-200 leading-none truncate">{item.name}</span>
-                                                <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium">{Math.round((item.value / portfolioSummary.totalValue) * 100)}%</span>
+                                            <div className="w-2.5 h-2.5 rounded-full shadow-sm flex-shrink-0" style={{ backgroundColor: item.color }}></div>
+                                            <div className="flex items-center gap-2 min-w-0">
+                                                <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 leading-none">{item.name}</span>
+                                                <span className="text-[10px] sm:text-xs text-slate-400 font-medium">{Math.round((item.value / portfolioSummary.totalValue) * 100)}%</span>
                                             </div>
                                         </div>
                                     ))}
