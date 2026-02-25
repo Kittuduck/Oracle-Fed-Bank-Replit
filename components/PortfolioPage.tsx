@@ -311,40 +311,39 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                     </div>
                 </nav>
 
-                <main className="max-w-6xl mx-auto px-6 py-8 space-y-8 pb-20">
+                <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 pb-20">
                     {/* Summary Card */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-2 bg-white dark:bg-[#15161a] rounded-xl p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm relative overflow-hidden group">
-                            {/* Decoration */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                        <div className="lg:col-span-2 bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-federalblue-900/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
                             <div className="relative z-10 flex flex-col justify-between h-full">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Portfolio Value</p>
-                                        <h2 className="text-4xl font-light text-[#333333] dark:text-white tracking-tight">
-                                            {pData.displayValue}<span className="text-slate-400 text-2xl">.00</span>
+                                <div className="flex justify-between items-start mb-4 sm:mb-6 gap-3">
+                                    <div className="min-w-0">
+                                        <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Portfolio Value</p>
+                                        <h2 className="text-2xl sm:text-4xl font-light text-[#333333] dark:text-white tracking-tight truncate">
+                                            {pData.displayValue}<span className="text-slate-400 text-lg sm:text-2xl">.00</span>
                                         </h2>
                                     </div>
-                                    <div className="flex flex-col items-end">
-                                        <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-md text-sm font-bold">
-                                            <TrendingUp className="w-4 h-4" />
+                                    <div className="flex flex-col items-end flex-shrink-0">
+                                        <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-md text-xs sm:text-sm font-bold whitespace-nowrap">
+                                            <TrendingUp className="w-3.5 h-3.5" />
                                             +{portfolioSummary.returnsPercentage}%
                                         </span>
-                                        <span className="text-xs text-slate-500 mt-1.5">All Time Returns</span>
+                                        <span className="text-[10px] sm:text-xs text-slate-500 mt-1">All Time Returns</span>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-8 border-t border-[#E0E0E0] dark:border-slate-800/50 pt-6">
+                                <div className="grid grid-cols-2 gap-4 sm:gap-8 border-t border-[#E0E0E0] dark:border-slate-800/50 pt-4 sm:pt-6">
                                     <div>
-                                        <p className="text-xs text-slate-500 mb-1">Invested Amount</p>
-                                        <p className="text-lg font-medium text-slate-700 dark:text-slate-300">{formatCurrency(portfolioSummary.investedValue)}</p>
+                                        <p className="text-[10px] sm:text-xs text-slate-500 mb-1">Invested Amount</p>
+                                        <p className="text-sm sm:text-lg font-medium text-slate-700 dark:text-slate-300">{formatCurrency(portfolioSummary.investedValue)}</p>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-slate-500 mb-1">1 Day Change</p>
-                                        <p className="text-lg font-medium text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+                                        <p className="text-[10px] sm:text-xs text-slate-500 mb-1">1 Day Change</p>
+                                        <p className="text-sm sm:text-lg font-medium text-emerald-700 dark:text-emerald-400">
                                             +{formatCurrency(portfolioSummary.dayChange)}
-                                            <span className="text-xs font-normal opacity-80">({portfolioSummary.dayChangePercentage}%)</span>
+                                            <span className="text-[10px] sm:text-xs font-normal opacity-80 ml-1">({portfolioSummary.dayChangePercentage}%)</span>
                                         </p>
                                     </div>
                                 </div>
@@ -352,12 +351,11 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                         </div>
 
                         {/* Allocation Chart Card */}
-                        <div className="bg-white dark:bg-[#15161a] rounded-xl p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm flex flex-col h-full relative overflow-hidden">
+                        <div className="bg-white dark:bg-[#15161a] rounded-xl p-4 sm:p-6 border border-[#E0E0E0] dark:border-slate-800 shadow-federal dark:shadow-sm flex flex-col relative overflow-hidden">
                             <h3 className="text-sm font-bold text-[#333333] dark:text-white mb-2 z-10 relative">Asset Allocation</h3>
 
-                            <div className="flex items-center justify-between flex-1 min-h-[200px] relative z-10">
-                                {/* Chart Section - Left */}
-                                <div className="relative w-[55%] h-[200px] flex items-center justify-center">
+                            <div className="flex items-center justify-between flex-1 min-h-[180px] relative z-10">
+                                <div className="relative w-[50%] sm:w-[55%] h-[180px] flex items-center justify-center">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <RePieChart>
                                             <Pie
@@ -366,13 +364,13 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                                                 data={allocationData}
                                                 cx="50%"
                                                 cy="50%"
-                                                innerRadius="65%" // Responsive relative size
-                                                outerRadius="85%" // Responsive relative size
-                                                paddingAngle={5}
+                                                innerRadius="60%"
+                                                outerRadius="82%"
+                                                paddingAngle={4}
                                                 dataKey="value"
                                                 onMouseEnter={onPieEnter}
                                                 onMouseLeave={onPieLeave}
-                                                cornerRadius={5}
+                                                cornerRadius={4}
                                                 stroke="none"
                                             >
                                                 {allocationData.map((entry, index) => (
@@ -407,37 +405,31 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                                         </RePieChart>
                                     </ResponsiveContainer>
 
-                                    {/* Dynamic Center Label - Perfectly Centered via Absolute */}
                                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5 text-center px-2 truncate w-full">
+                                        <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5 text-center px-1 truncate w-full">
                                             {activeItem ? activeItem.name : 'Total'}
                                         </span>
-                                        <span className={`font-bold text-[#333333] dark:text-white tracking-tighter ${activeItem ? 'text-lg' : 'text-xl'}`}>
+                                        <span className={`font-bold text-[#333333] dark:text-white tracking-tighter ${activeItem ? 'text-sm sm:text-lg' : 'text-base sm:text-xl'}`}>
                                             {activeItem
-                                                ? (activeItem.value / 100000).toFixed(2) + 'L'
+                                                ? (activeItem.value / 100000).toFixed(1) + 'L'
                                                 : (portfolioSummary.totalValue / 100000).toFixed(1) + 'L'
                                             }
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Legend Section - Right Side */}
-                                <div className="flex flex-col justify-center gap-3 w-[40%] pl-2">
+                                <div className="flex flex-col justify-center gap-2.5 w-[48%] sm:w-[40%] pl-1 sm:pl-2">
                                     {allocationData.map((item, index) => (
                                         <div
                                             key={item.name}
-                                            className={`flex items-start gap-2 transition-opacity duration-300 group cursor-default ${activeIndex !== undefined && activeIndex !== index ? 'opacity-40' : 'opacity-100'}`}
+                                            className={`flex items-center gap-1.5 sm:gap-2 transition-opacity duration-300 group cursor-default ${activeIndex !== undefined && activeIndex !== index ? 'opacity-40' : 'opacity-100'}`}
                                             onMouseEnter={() => setActiveIndex(index)}
                                             onMouseLeave={() => setActiveIndex(undefined)}
                                         >
-                                            <div className="w-2.5 h-2.5 rounded-full shadow-sm mt-1 flex-shrink-0" style={{ backgroundColor: item.color }}></div>
+                                            <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm flex-shrink-0" style={{ backgroundColor: item.color }}></div>
                                             <div className="flex flex-col min-w-0">
-                                                <span className="text-xs font-bold text-slate-700 dark:text-slate-200 leading-none truncate">{item.name}</span>
-                                                <div className="flex items-center gap-1.5 mt-0.5">
-                                                    <span className="text-[10px] text-slate-500 font-medium">{Math.round((item.value / portfolioSummary.totalValue) * 100)}%</span>
-                                                    <span className="text-[10px] text-slate-300 dark:text-slate-600">|</span>
-                                                    <span className="text-[10px] text-slate-500 dark:text-slate-400">{(item.value / 100000).toFixed(1)}L</span>
-                                                </div>
+                                                <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight truncate">{item.name}</span>
+                                                <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium">{Math.round((item.value / portfolioSummary.totalValue) * 100)}%</span>
                                             </div>
                                         </div>
                                     ))}
@@ -455,7 +447,7 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                             <h3 className="text-lg font-bold text-[#333333] dark:text-white">Oracle Portfolio Insights</h3>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                             {/* Insight 1 */}
                             <div className="bg-gradient-to-br from-white to-[#F9F9F9] dark:from-[#15161a] dark:to-[#1c1e24] border border-federalblue-100 dark:border-federalblue-800/30 rounded-xl p-5 relative overflow-hidden shadow-sm hover:shadow-md transition-all group">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-emerald-600"></div>
@@ -574,37 +566,57 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                         </div>
 
                         <div className="bg-white dark:bg-[#15161a] border border-[#E0E0E0] dark:border-slate-800 rounded-xl overflow-hidden shadow-federal dark:shadow-none">
-                            <div className="grid grid-cols-12 gap-4 p-4 border-b border-[#E0E0E0] dark:border-slate-800 bg-[#F9F9F9] dark:bg-[#1c1e24]/50 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                <div className="col-span-5 md:col-span-4">Asset Name</div>
-                                <div className="col-span-3 hidden md:block">Category</div>
-                                <div className="col-span-4 md:col-span-3 text-right">Current Value</div>
-                                <div className="col-span-3 md:col-span-2 text-right">Returns</div>
+                            <div className="hidden sm:grid grid-cols-12 gap-4 p-4 border-b border-[#E0E0E0] dark:border-slate-800 bg-[#F9F9F9] dark:bg-[#1c1e24]/50 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <div className="col-span-5 lg:col-span-4">Asset Name</div>
+                                <div className="col-span-3 hidden lg:block">Category</div>
+                                <div className="col-span-4 lg:col-span-3 text-right">Current Value</div>
+                                <div className="col-span-3 lg:col-span-2 text-right">Returns</div>
                             </div>
 
                             <div className="divide-y divide-[#E0E0E0] dark:divide-slate-800">
                                 {holdings.map((holding) => (
-                                    <div key={holding.id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-[#F9F9F9] dark:hover:bg-slate-800/30 transition-colors cursor-pointer group">
-                                        <div className="col-span-5 md:col-span-4">
-                                            <h4 className="text-sm font-semibold text-[#333333] dark:text-white group-hover:text-federalblue-900 dark:group-hover:text-federalblue-400 transition-colors">{holding.name}</h4>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border ${holding.type === 'Equity' ? 'bg-federalblue-50 dark:bg-federalblue-900/10 text-federalblue-900 dark:text-federalblue-400 border-federalblue-100 dark:border-federalblue-800/30' :
-                                                    holding.type === 'Gold' ? 'bg-federalgold-50 dark:bg-federalgold-900/10 text-federalgold-600 dark:text-federalgold-400 border-federalgold-100 dark:border-federalgold-800/30' :
-                                                        'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
-                                                    }`}>
-                                                    {holding.type}
-                                                </span>
+                                    <div key={holding.id} className="p-4 hover:bg-[#F9F9F9] dark:hover:bg-slate-800/30 transition-colors cursor-pointer group">
+                                        <div className="hidden sm:grid grid-cols-12 gap-4 items-center">
+                                            <div className="col-span-5 lg:col-span-4">
+                                                <h4 className="text-sm font-semibold text-[#333333] dark:text-white group-hover:text-federalblue-900 dark:group-hover:text-federalblue-400 transition-colors">{holding.name}</h4>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border ${holding.type === 'Equity' ? 'bg-federalblue-50 dark:bg-federalblue-900/10 text-federalblue-900 dark:text-federalblue-400 border-federalblue-100 dark:border-federalblue-800/30' :
+                                                        holding.type === 'Gold' ? 'bg-federalgold-50 dark:bg-federalgold-900/10 text-federalgold-600 dark:text-federalgold-400 border-federalgold-100 dark:border-federalgold-800/30' :
+                                                            'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                                                        }`}>
+                                                        {holding.type}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="col-span-3 hidden lg:block text-sm text-slate-600 dark:text-slate-400">
+                                                {holding.category}
+                                            </div>
+                                            <div className="col-span-4 lg:col-span-3 text-right">
+                                                <p className="text-sm font-medium text-[#333333] dark:text-white">{formatCurrency(holding.value)}</p>
+                                                <p className="text-xs text-slate-500">{holding.allocation}%</p>
+                                            </div>
+                                            <div className="col-span-3 lg:col-span-2 text-right">
+                                                <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400">+{holding.returns}%</p>
+                                                <p className="text-xs text-slate-500 hidden lg:block">CAGR</p>
                                             </div>
                                         </div>
-                                        <div className="col-span-3 hidden md:block text-sm text-slate-600 dark:text-slate-400">
-                                            {holding.category}
-                                        </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <p className="text-sm font-medium text-[#333333] dark:text-white">{formatCurrency(holding.value)}</p>
-                                            <p className="text-xs text-slate-500">{holding.allocation}% of Portfolio</p>
-                                        </div>
-                                        <div className="col-span-3 md:col-span-2 text-right">
-                                            <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400">+{holding.returns}%</p>
-                                            <p className="text-xs text-slate-500 hidden md:block">CAGR</p>
+                                        <div className="sm:hidden flex justify-between items-center">
+                                            <div className="min-w-0 flex-1 mr-3">
+                                                <h4 className="text-sm font-semibold text-[#333333] dark:text-white truncate">{holding.name}</h4>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <span className={`text-[9px] px-1.5 py-0.5 rounded-sm border ${holding.type === 'Equity' ? 'bg-federalblue-50 dark:bg-federalblue-900/10 text-federalblue-900 dark:text-federalblue-400 border-federalblue-100 dark:border-federalblue-800/30' :
+                                                        holding.type === 'Gold' ? 'bg-federalgold-50 dark:bg-federalgold-900/10 text-federalgold-600 dark:text-federalgold-400 border-federalgold-100 dark:border-federalgold-800/30' :
+                                                            'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                                                        }`}>
+                                                        {holding.type}
+                                                    </span>
+                                                    <span className="text-[9px] text-slate-400">{holding.category}</span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right flex-shrink-0">
+                                                <p className="text-sm font-medium text-[#333333] dark:text-white">{formatCurrency(holding.value)}</p>
+                                                <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400">+{holding.returns}%</p>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -615,8 +627,8 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
 
                 {/* Optimization Report Modal */}
                 {showReport && (
-                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-                        <div className="bg-white dark:bg-[#15161a] rounded-xl w-full max-w-2xl border border-[#E0E0E0] dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+                        <div className="bg-white dark:bg-[#15161a] rounded-t-xl sm:rounded-xl w-full sm:max-w-2xl border border-[#E0E0E0] dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
                             <div className="px-6 py-4 border-b border-[#E0E0E0] dark:border-slate-800 flex justify-between items-center bg-[#F9F9F9] dark:bg-[#1c1e24]/50">
                                 <div className="flex items-center gap-3">
                                     {executionStep !== 'SUCCESS' && (
@@ -649,14 +661,14 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                                                 <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                                                     Our algorithms detected a <span className="font-semibold text-[#333333] dark:text-white">{pData.insight2.overlapPercent} overlap</span> {pData.insight2.text}
                                                 </p>
-                                                <div className="mt-4 flex gap-4">
+                                                <div className="mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4">
                                                     <div className="flex-1 bg-white dark:bg-[#15161a] p-3 rounded-lg border border-[#E0E0E0] dark:border-slate-800/50">
-                                                        <p className="text-xs text-slate-500 mb-1">{pData.insight2.fund1}</p>
-                                                        <p className="text-lg font-bold text-[#333333] dark:text-white">{pData.insight2.fund1Exposure} <span className="text-xs font-medium text-slate-400">Exposure</span></p>
+                                                        <p className="text-xs text-slate-500 mb-1 truncate">{pData.insight2.fund1}</p>
+                                                        <p className="text-base sm:text-lg font-bold text-[#333333] dark:text-white">{pData.insight2.fund1Exposure} <span className="text-xs font-medium text-slate-400">Exposure</span></p>
                                                     </div>
                                                     <div className="flex-1 bg-white dark:bg-[#15161a] p-3 rounded-lg border border-[#E0E0E0] dark:border-slate-800/50">
-                                                        <p className="text-xs text-slate-500 mb-1">{pData.insight2.fund2}</p>
-                                                        <p className="text-lg font-bold text-[#333333] dark:text-white">{pData.insight2.fund2Exposure} <span className="text-xs font-medium text-slate-400">Exposure</span></p>
+                                                        <p className="text-xs text-slate-500 mb-1 truncate">{pData.insight2.fund2}</p>
+                                                        <p className="text-base sm:text-lg font-bold text-[#333333] dark:text-white">{pData.insight2.fund2Exposure} <span className="text-xs font-medium text-slate-400">Exposure</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -699,7 +711,7 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onBack, isDarkMode, toggl
                                         {/* Section 3: Projected Impact */}
                                         <div>
                                             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">3. Projected Impact</h4>
-                                            <div className="grid grid-cols-3 gap-4">
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                                 <div className="p-4 rounded-lg bg-federalblue-50 dark:bg-federalblue-900/10 border border-federalblue-100 dark:border-federalblue-900/20 text-center">
                                                     <PieChartIcon className="w-5 h-5 text-federalblue-900 mx-auto mb-2" />
                                                     <p className="text-xs text-slate-500 mb-1">Overlap</p>
