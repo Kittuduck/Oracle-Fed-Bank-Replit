@@ -11,7 +11,7 @@ interface LoanJourneyProps {
   persona: any;
   isDarkMode: boolean;
   onComplete: (loanData: LoanData) => void;
-  onDismiss: () => void;
+  onDismiss: (savedOffer?: { destination: string; amount: number; emi: number; rate: number; tenure: number }) => void;
   onNavigate?: (page: string) => void;
   currentFinancials: { liquid: number; need: number; goal: number };
 }
@@ -733,7 +733,13 @@ const LoanJourneyOrchestrator: React.FC<LoanJourneyProps> = ({
       </button>
 
       <button
-        onClick={onDismiss}
+        onClick={() => onDismiss({
+          destination: tripDetails?.destination || selectedDestination || 'Travel',
+          amount: loanAmount,
+          emi,
+          rate,
+          tenure
+        })}
         className={`w-full py-3 text-xs font-medium rounded-xl transition-all ${isDarkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-400 hover:text-slate-600'}`}
       >
         Maybe later

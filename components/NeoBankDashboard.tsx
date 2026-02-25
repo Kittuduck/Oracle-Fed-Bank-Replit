@@ -70,6 +70,8 @@ interface NeoBankDashboardProps {
     persona?: PersonaProfile | null;
     onResetPersona?: () => void;
     activeLoan?: { amount: number; emi: number; tenure: number; rate: number; destination?: string } | null;
+    savedLoanOffer?: { destination: string; amount: number; emi: number; rate: number; tenure: number } | null;
+    onResumeLoanOffer?: () => void;
 }
 
 const iconMap: Record<string, any> = {
@@ -99,6 +101,8 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
     persona,
     onResetPersona,
     activeLoan,
+    savedLoanOffer,
+    onResumeLoanOffer,
 }) => {
     const totalBalance = persona ? persona.financials.liquid : currentFinancials.liquid;
     const [showCardDetails, setShowCardDetails] = React.useState(false);
@@ -271,6 +275,21 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
                         </div>
 
                         <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 snap-x snap-mandatory sleek-scroll">
+                            {savedLoanOffer && (
+                                <div
+                                    className="min-w-[220px] snap-center p-4 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 text-white shadow-lg relative overflow-hidden cursor-pointer active:scale-[0.98] transition-transform border border-white/15"
+                                    onClick={() => onResumeLoanOffer?.()}
+                                >
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-[30px] -mr-8 -mt-8"></div>
+                                    <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md mb-1 inline-block">SAVED OFFER</span>
+                                    <h4 className="text-[13px] font-bold mt-1 mb-0.5 leading-snug">✈️ {savedLoanOffer.destination} Trip Loan</h4>
+                                    <p className="text-[10px] text-white/70 leading-relaxed">Pre-approved ₹{savedLoanOffer.amount.toLocaleString('en-IN')} at {savedLoanOffer.rate}% p.a.</p>
+                                    <div className="mt-2.5 flex items-center gap-1 text-[9px] font-bold text-white/90 uppercase tracking-widest">
+                                        <span>Resume</span>
+                                        <ArrowRight className="w-2.5 h-2.5" />
+                                    </div>
+                                </div>
+                            )}
                             {persona.discoverCards.map((card, i) => (
                                 <div
                                     key={i}

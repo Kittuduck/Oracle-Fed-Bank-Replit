@@ -14,6 +14,7 @@ interface EmbeddedOrchestratorChatProps {
     onPayCCBill: () => void;
     onNavigate?: (page: string) => void;
     onLoanDisbursed?: (loanData: { amount: number; emi: number; tenure: number; rate: number; destination?: string }) => void;
+    onSaveLoanOffer?: (offer: { destination: string; amount: number; emi: number; rate: number; tenure: number }) => void;
     currentFinancials: { liquid: number, need: number, goal: number };
     oracleActive: boolean;
     initialPrompt?: string;
@@ -71,6 +72,7 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
     onPayCCBill,
     onNavigate,
     onLoanDisbursed,
+    onSaveLoanOffer,
     currentFinancials,
     initialPrompt,
     persona,
@@ -362,14 +364,17 @@ const EmbeddedOrchestratorChat: React.FC<EmbeddedOrchestratorChatProps> = ({
                                     destination: loanData.destination
                                 });
                             }}
-                            onDismiss={() => {
+                            onDismiss={(savedOffer) => {
                                 setLoanJourneyActive(false);
+                                if (savedOffer) {
+                                    onSaveLoanOffer?.(savedOffer);
+                                }
                                 const dismissMsg: Message = {
                                     id: (Date.now() + 3).toString(),
                                     role: 'model',
                                     state: 'GUIDANCE',
-                                    text: "No problem! This offer is saved in your 'Discover' section if you want to revisit it later.",
-                                    content: <p>No problem! This offer is saved in your <strong>'Discover'</strong> section if you want to revisit it later.</p>,
+                                    text: "No problem! This offer is saved in your 'Discover' section on the dashboard. Tap on it anytime to resume.",
+                                    content: <p>No problem! This offer is saved in your <strong>'Discover'</strong> section on the dashboard. Tap on it anytime to resume.</p>,
                                     actions: ['View Dashboard', 'Track Goals']
                                 };
                                 setMessages(prev => [...prev, dismissMsg]);

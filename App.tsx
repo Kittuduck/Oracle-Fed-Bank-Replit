@@ -46,6 +46,7 @@ const App: React.FC = () => {
     const [transferPrefill, setTransferPrefill] = useState<{ recipient: string, amount: string } | null>(null);
     const [oraclePrompt, setOraclePrompt] = useState<string>('');
     const [activeLoan, setActiveLoan] = useState<{ amount: number; emi: number; tenure: number; rate: number; destination?: string } | null>(null);
+    const [savedLoanOffer, setSavedLoanOffer] = useState<{ destination: string; amount: number; emi: number; rate: number; tenure: number } | null>(null);
 
     const handlePersonaSelect = (persona: PersonaProfile) => {
         setSelectedPersona(persona);
@@ -432,7 +433,8 @@ const App: React.FC = () => {
                             onNavigateToDashboard={() => setView('DASHBOARD')}
                             onPayCCBill={handlePayCreditCardBill}
                             onNavigate={(page: string) => setView(page as any)}
-                            onLoanDisbursed={(loanData) => setActiveLoan(loanData)}
+                            onLoanDisbursed={(loanData) => { setActiveLoan(loanData); setSavedLoanOffer(null); }}
+                            onSaveLoanOffer={(offer) => setSavedLoanOffer(offer)}
                             currentFinancials={currentFinancials}
                             oracleActive={oracleActive}
                             initialPrompt={oraclePrompt}
@@ -574,6 +576,8 @@ const App: React.FC = () => {
                 persona={selectedPersona}
                 onResetPersona={handleResetPersona}
                 activeLoan={activeLoan}
+                savedLoanOffer={savedLoanOffer}
+                onResumeLoanOffer={() => { setSavedLoanOffer(null); setOraclePrompt('I want to continue with the travel loan offer'); setView('ORACLE'); }}
             />
         );
     };
