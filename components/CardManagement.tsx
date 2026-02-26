@@ -84,81 +84,58 @@ const CardManagement: React.FC<CardManagementProps> = ({ onBack }) => {
             </div>
 
             <div className="flex-1 overflow-y-auto">
-                <div className="px-6 pt-8 pb-4 space-y-4">
-                    <div className="relative h-60 w-full" style={{ perspective: '1200px' }}>
-                        {cards.map((card, idx) => {
-                            const isActive = idx === activeIndex;
-                            const offset = idx - activeIndex;
-                            return (
-                                <div
-                                    key={card.id}
-                                    onClick={() => setActiveIndex(idx)}
-                                    className="absolute inset-0 cursor-pointer"
-                                    style={{
-                                        transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-                                        zIndex: isActive ? 10 : 5,
-                                        transform: isActive
-                                            ? 'translateY(0) rotateX(0) scale(1)'
-                                            : offset < 0
-                                                ? 'translateY(-24px) translateX(8px) rotateX(6deg) rotateZ(-2deg) scale(0.92)'
-                                                : 'translateY(24px) translateX(8px) rotateX(-6deg) rotateZ(2deg) scale(0.92)',
-                                        opacity: isActive ? 1 : 0.55,
-                                        filter: isActive ? 'none' : 'brightness(0.85)',
-                                        transformOrigin: 'center center',
-                                        pointerEvents: 'auto',
-                                    }}
-                                >
-                                    <div className={`w-full h-full rounded-2xl p-6 text-white shadow-2xl relative ${card.color}`}>
-                                        <div className="flex justify-between items-start mb-12">
-                                            <div className="space-y-0.5">
-                                                <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">{card.type}</p>
-                                                <h3 className="text-lg font-bold tracking-tight">{card.name}</h3>
-                                            </div>
-                                            <Wifi className="w-6 h-6 rotate-90 opacity-40" />
-                                        </div>
+                <div className="px-6 py-8 space-y-6">
+                    <div className="relative h-56 w-full">
+                        {cards.map((card, idx) => (
+                            <div
+                                key={card.id}
+                                onClick={() => setActiveIndex(idx)}
+                                className={`absolute inset-0 rounded-2xl p-6 text-white shadow-2xl transition-all duration-500 cursor-pointer ${card.color} ${idx === activeIndex
+                                    ? 'translate-y-0 scale-100 opacity-100 z-10'
+                                    : idx < activeIndex
+                                        ? 'translate-y-4 scale-95 opacity-40 z-0'
+                                        : 'translate-y-4 scale-95 opacity-40 z-0'
+                                    }`}
+                            >
+                                <div className="flex justify-between items-start mb-12">
+                                    <div className="space-y-0.5">
+                                        <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">{card.type}</p>
+                                        <h3 className="text-lg font-bold tracking-tight">{card.name}</h3>
+                                    </div>
+                                    <Wifi className="w-6 h-6 rotate-90 opacity-40" />
+                                </div>
 
-                                        <div className="space-y-4" onClick={(e) => { if (isActive) { e.stopPropagation(); handleCopy(card.number.replace(/\s/g, ''), 'Card Number'); } }}>
-                                            <div className="flex justify-between items-center">
-                                                <p className="text-xl font-mono tracking-[0.2em]">{card.number}</p>
-                                                {copied === 'Card Number' && isActive && <span className="text-[10px] text-emerald-400 font-bold">Copied!</span>}
-                                            </div>
-                                            <div className="flex justify-between items-end">
-                                                <div className="space-y-0.5">
-                                                    <p className="text-[8px] font-bold opacity-60 uppercase">Expiry Date</p>
-                                                    <p className="text-sm font-bold">{card.expiry}</p>
-                                                </div>
-                                                <div className="w-12 h-8 bg-white/20 rounded backdrop-blur-sm border border-white/10 flex items-center justify-center italic font-bold text-xs">
-                                                    VISA
-                                                </div>
-                                            </div>
+                                <div className="space-y-4" onClick={(e) => { if (idx === activeIndex) { e.stopPropagation(); handleCopy(card.number.replace(/\s/g, ''), 'Card Number'); } }}>
+                                    <div className="flex justify-between items-center group/num">
+                                        <p className="text-xl font-mono tracking-[0.2em]">{card.number}</p>
+                                        {copied === 'Card Number' && activeIndex === idx && <span className="text-[10px] text-emerald-400 font-bold">Copied!</span>}
+                                    </div>
+                                    <div className="flex justify-between items-end">
+                                        <div className="space-y-0.5">
+                                            <p className="text-[8px] font-bold opacity-60 uppercase">Expiry Date</p>
+                                            <p className="text-sm font-bold">{card.expiry}</p>
                                         </div>
-
-                                        {card.isBlocked && (
-                                            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-2xl flex items-center justify-center">
-                                                <div className="bg-white text-slate-900 px-4 py-2 rounded-full flex items-center gap-2 shadow-xl">
-                                                    <Lock className="w-4 h-4 text-red-500" />
-                                                    <span className="text-xs font-bold uppercase tracking-widest">Card Blocked</span>
-                                                </div>
-                                            </div>
-                                        )}
+                                        <div className="w-12 h-8 bg-white/20 rounded backdrop-blur-sm border border-white/10 flex items-center justify-center italic font-bold text-xs">
+                                            VISA
+                                        </div>
                                     </div>
                                 </div>
-                            );
-                        })}
+
+                                {card.isBlocked && (
+                                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-2xl flex items-center justify-center">
+                                        <div className="bg-white text-slate-900 px-4 py-2 rounded-full flex items-center gap-2 shadow-xl">
+                                            <Lock className="w-4 h-4 text-red-500" />
+                                            <span className="text-xs font-bold uppercase tracking-widest">Card Blocked</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
 
-                    <div className="flex justify-center items-center gap-3">
-                        {cards.map((card, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setActiveIndex(i)}
-                                className={`transition-all duration-300 rounded-full text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 ${i === activeIndex
-                                    ? 'bg-federalblue-900 text-white shadow-md scale-105'
-                                    : 'bg-slate-200 text-slate-500 hover:bg-slate-300'
-                                }`}
-                            >
-                                {card.type === 'CREDIT' ? 'Credit' : 'Debit'}
-                            </button>
+                    <div className="flex justify-center gap-2">
+                        {cards.map((_, i) => (
+                            <button key={i} onClick={() => setActiveIndex(i)} className={`h-1.5 rounded-full transition-all ${i === activeIndex ? 'w-6 bg-federalblue-900' : 'w-1.5 bg-slate-300 hover:bg-slate-400'}`} />
                         ))}
                     </div>
                 </div>
