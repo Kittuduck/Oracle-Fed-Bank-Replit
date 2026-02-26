@@ -121,7 +121,7 @@ const NeoBankDashboard: React.FC<NeoBankDashboardProps> = ({
     };
 
     return (
-        <div className={`min-h-screen pb-32 animate-fade-in font-sans selection:bg-federalgold-100 selection:text-federalgold-900 bg-zinc-50 dark:bg-zinc-950 transition-all duration-700 ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''}`}>
+        <div className={`relative min-h-screen pb-32 animate-fade-in font-sans selection:bg-federalgold-100 selection:text-federalgold-900 bg-zinc-50 dark:bg-zinc-950 transition-all duration-700 ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''}`}>
             {/* --- Atmospheric Header --- */}
             <div className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl px-6 py-4 flex justify-between items-center transition-colors duration-500 border-b border-slate-200/50 dark:border-white/10">
                 <div className="flex items-center gap-3 group cursor-pointer" onClick={onOpenProfile}>

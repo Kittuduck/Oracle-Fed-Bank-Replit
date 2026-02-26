@@ -585,7 +585,7 @@ const App: React.FC = () => {
     return (
         <div className={`h-full ${isDarkMode ? 'dark' : ''} ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''} bg-gray-50 dark:bg-gray-900 flex justify-center min-h-screen`}>
             <div className="w-full max-w-md h-screen bg-white dark:bg-zinc-950 border-2 border-slate-800 shadow-2xl relative flex flex-col overflow-hidden">
-                <div className="flex-1 overflow-y-auto overflow-x-hidden relative">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden">
                     {renderContent()}
                 </div>
                 {(view !== 'PERSONA_SELECT' && view !== 'ONBOARDING' && view !== 'PAYMENTS' && view !== 'CARDS' && view !== 'SUPPORT' && view !== 'LOANS' && view !== 'CARD_APPLY' && view !== 'NICHE_LOANS' && view !== 'LEGACY_SERVICES' && view !== 'ORACLE') && (
