@@ -90,12 +90,11 @@ const CardManagement: React.FC<CardManagementProps> = ({ onBack }) => {
                             <div
                                 key={card.id}
                                 onClick={() => setActiveIndex(idx)}
-                                className={`absolute inset-0 rounded-2xl p-6 text-white shadow-2xl transition-all duration-500 cursor-pointer ${card.color} ${idx === activeIndex
-                                    ? 'translate-y-0 scale-100 opacity-100 z-10'
-                                    : idx < activeIndex
-                                        ? 'translate-y-4 scale-95 opacity-40 z-0'
-                                        : 'translate-y-4 scale-95 opacity-40 z-0'
+                                className={`absolute inset-0 rounded-2xl p-6 text-white transition-all duration-500 cursor-pointer ${card.color} ${idx === activeIndex
+                                    ? 'translate-y-0 scale-100 z-10 shadow-2xl'
+                                    : 'translate-y-4 scale-95 opacity-50 z-0 shadow-lg'
                                     }`}
+                                style={{ opacity: idx === activeIndex ? 1 : 0.45 }}
                             >
                                 <div className="flex justify-between items-start mb-12">
                                     <div className="space-y-0.5">
