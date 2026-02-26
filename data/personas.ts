@@ -131,7 +131,7 @@ export const PERSONAS: PersonaProfile[] = [
       { id: 'adb2', name: 'Adani Electricity', amount: 4250, type: 'DUE', dueDate: '4 days', category: 'Utilities' },
       { id: 'adb3', name: 'Netflix Premium', amount: 649, type: 'AUTO', status: 'ACTIVE', dueDate: '5th of month', category: 'Entertainment' },
       { id: 'adb4', name: 'Amazon Prime', amount: 1499, type: 'AUTO', status: 'ACTIVE', dueDate: '12th of month', category: 'Entertainment' },
-      { id: 'adb5', name: 'Parents Medical Insurance', amount: 12500, type: 'AUTO', status: 'ACTIVE', dueDate: '1st of month', category: 'Health' },
+      { id: 'adb5', name: 'Parents Medical Insurance', amount: 150000, type: 'AUTO', status: 'ACTIVE', dueDate: '15th Mar', category: 'Health' },
       { id: 'adb6', name: "Gold's Gym", amount: 3500, type: 'AUTO', status: 'ACTIVE', dueDate: 'Tomorrow', category: 'Fitness' },
     ],
     oracleBriefs: [
