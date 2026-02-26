@@ -28,7 +28,7 @@ const getPersonaExpenditureData = (personaId: string) => {
     const data: Record<string, any> = {
         advait: {
             anomaly: { amount: '₹12,400', location: 'Club Aqua, London' },
-            insight: { text: 'You haven\'t visited "Gold\'s Gym" in 45 days, but the ₹3,500 auto-pay is scheduled for tomorrow.', action: 'Pause Subscription', billerId: 'adb3' },
+            insight: { text: 'You haven\'t visited "Gold\'s Gym" in 45 days, but the ₹3,500 auto-pay is scheduled for tomorrow.', action: 'Pause Subscription', billerId: 'adb6' },
             daily: [
                 { name: 'Mon', amount: 2800, average: 4500 },
                 { name: 'Tue', amount: 5200, average: 4500 },

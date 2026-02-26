@@ -132,6 +132,7 @@ export const PERSONAS: PersonaProfile[] = [
       { id: 'adb3', name: 'Netflix Premium', amount: 649, type: 'AUTO', status: 'ACTIVE', dueDate: '5th of month', category: 'Entertainment' },
       { id: 'adb4', name: 'Amazon Prime', amount: 1499, type: 'AUTO', status: 'ACTIVE', dueDate: '12th of month', category: 'Entertainment' },
       { id: 'adb5', name: 'Parents Medical Insurance', amount: 12500, type: 'AUTO', status: 'ACTIVE', dueDate: '1st of month', category: 'Health' },
+      { id: 'adb6', name: "Gold's Gym", amount: 3500, type: 'AUTO', status: 'ACTIVE', dueDate: 'Tomorrow', category: 'Fitness' },
     ],
     oracleBriefs: [
       { id: 'adob1', title: 'FIRE Milestone Ahead', summary: 'Your retirement corpus crossed ₹4.2Cr. At current rate, you will hit Fat FIRE 14 months early by 2039.', type: 'insight', actionLabel: 'View Projection' },

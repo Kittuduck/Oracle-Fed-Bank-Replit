@@ -71,7 +71,7 @@ const App: React.FC = () => {
             'Tax': Zap, 'Utilities': Zap, 'Vendor': CreditCard, 'Software': Smartphone,
             'Insurance': CreditCard, 'Entertainment': Smartphone, 'Finance': CreditCard,
             'Health': CreditCard, 'Living': CreditCard, 'Lifestyle': CreditCard,
-            'Education': GraduationCap, 'Household': CreditCard,
+            'Education': GraduationCap, 'Household': CreditCard, 'Fitness': Dumbbell,
         };
         const personaBillers: Biller[] = persona.billers.map(b => ({
             ...b,
