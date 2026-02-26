@@ -94,7 +94,10 @@ const CardManagement: React.FC<CardManagementProps> = ({ onBack }) => {
                                     ? 'translate-y-0 scale-100 z-10 shadow-2xl'
                                     : 'translate-y-5 scale-[0.94] z-0 shadow-lg'
                                     }`}
-                                style={{ opacity: idx === activeIndex ? 1 : 0.4 }}
+                                style={{
+                                    opacity: idx === activeIndex ? 1 : 0.4,
+                                    backgroundColor: idx === activeIndex ? '#0f172a' : undefined,
+                                }}
                             >
                             <div className={`w-full h-full rounded-2xl p-6 ${card.color}`} style={idx === activeIndex ? {} : { filter: 'blur(1px)' }}
                             >
