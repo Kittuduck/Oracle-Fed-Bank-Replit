@@ -436,7 +436,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                 </SettingsGroup>
 
                 {/* Employment & Dependents Cards (Moved ABOVE Financial Hub) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     {/* Employment Card */}
                     <div className={`bg-white dark:bg-[#15161a] border rounded-xl p-4 shadow-federal dark:shadow-none transition-all ${editingEmployment ? 'border-federalblue-500/50 ring-1 ring-federalblue-500/20' : 'border-[#E0E0E0] dark:border-slate-800'}`}>
                         <div className="flex justify-between items-start mb-3">
@@ -487,7 +487,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                     </div>
 
                     {/* Dependents Card */}
-                    <div className={`bg-white dark:bg-[#15161a] border rounded-xl p-4 shadow-federal dark:shadow-none transition-all ${editingDependents ? 'border-federalblue-500/50 ring-1 ring-federalblue-500/20 col-span-1 sm:col-span-2' : 'border-[#E0E0E0] dark:border-slate-800'}`}>
+                    <div className={`bg-white dark:bg-[#15161a] border rounded-xl p-4 shadow-federal dark:shadow-none transition-all ${editingDependents ? 'border-federalblue-500/50 ring-1 ring-federalblue-500/20' : 'border-[#E0E0E0] dark:border-slate-800'}`}>
                         <div className="flex justify-between items-start mb-3">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-lg bg-federalblue-50 dark:bg-federalblue-900/20 flex items-center justify-center text-federalblue-900 dark:text-federalblue-400 border border-federalblue-100 dark:border-federalblue-800">
@@ -511,7 +511,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                             <div className="space-y-4 animate-fade-in">
                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
                                     {tempDependentsList.map((dep) => (
-                                        <div key={dep.id} className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-end p-2 rounded-lg bg-[#F6F6F6] dark:bg-slate-800/30 border border-[#E0E0E0] dark:border-slate-800">
+                                        <div key={dep.id} className="flex gap-3 items-end p-2 rounded-lg bg-[#F6F6F6] dark:bg-slate-800/30 border border-[#E0E0E0] dark:border-slate-800">
                                             <div className="flex-1">
                                                 <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Name</label>
                                                 <input
@@ -547,7 +547,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ onBack, isDarkMode, tog
                                 </div>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-1 pb-1">
+                            <div className="grid grid-cols-2 gap-2 pl-1 pb-1">
                                 {dependentsList.map(dep => (
                                     <div key={dep.id} className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-federalblue-400"></div>
