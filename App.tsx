@@ -586,7 +586,7 @@ const App: React.FC = () => {
         <div className={`h-full ${isDarkMode ? 'dark' : ''} ${festival !== 'DEFAULT' ? `theme-festive-${festival.toLowerCase()}` : ''} bg-gray-50 dark:bg-gray-900 flex justify-center min-h-screen`}>
             <div className="w-full max-w-md h-full min-h-screen bg-white dark:bg-zinc-950 border-2 border-slate-800 shadow-2xl relative overflow-hidden">
                 {renderContent()}
-                {(view !== 'PERSONA_SELECT' && view !== 'ONBOARDING' && view !== 'PAYMENTS' && view !== 'CARDS' && view !== 'SUPPORT' && view !== 'INVESTMENTS' && view !== 'LOANS' && view !== 'CARD_APPLY' && view !== 'NICHE_LOANS' && view !== 'LEGACY_SERVICES' && view !== 'ORACLE') && (
+                {(view !== 'PERSONA_SELECT' && view !== 'ONBOARDING' && view !== 'PAYMENTS' && view !== 'CARDS' && view !== 'SUPPORT' && view !== 'LOANS' && view !== 'CARD_APPLY' && view !== 'NICHE_LOANS' && view !== 'LEGACY_SERVICES' && view !== 'ORACLE') && (
                     <BottomNav
                         activePage={view as any}
                         onNavigate={(page) => setView(page)}
