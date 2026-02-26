@@ -382,8 +382,8 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
             {/* Add/Edit Goal Modal */}
             {(isAdding || editingGoal) && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white dark:bg-[#15161a] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-                        <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-[#1c1e24]/50">
+                    <div className="bg-white dark:bg-[#15161a] w-full max-w-md mx-4 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col">
+                        <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-[#1c1e24]/50 shrink-0">
                             <h3 className="font-bold text-slate-900 dark:text-white">
                                 {editingGoal ? 'Edit Strategic Goal' : 'New Strategic Goal'}
                             </h3>
@@ -395,7 +395,7 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                             </button>
                         </div>
 
-                        <div className="p-8 space-y-6">
+                        <div className="p-5 space-y-5 overflow-y-auto">
                             <div>
                                 <label className="block text-[10px] font-bold text-slate-500 mb-2 uppercase tracking-widest ml-1">Goal Title</label>
                                 <input
@@ -447,7 +447,7 @@ const GoalTracker: React.FC<GoalTrackerProps> = ({ goals, onAddGoal, onUpdateGoa
                             </div>
                         </div>
 
-                        <div className="p-8 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0b0c10] flex gap-4">
+                        <div className="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0b0c10] flex gap-4 shrink-0">
                             <button
                                 onClick={() => { setIsAdding(false); setEditingGoal(null); }}
                                 className="flex-1 py-4 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
