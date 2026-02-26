@@ -90,11 +90,13 @@ const CardManagement: React.FC<CardManagementProps> = ({ onBack }) => {
                             <div
                                 key={card.id}
                                 onClick={() => setActiveIndex(idx)}
-                                className={`absolute inset-0 rounded-2xl p-6 text-white transition-all duration-500 cursor-pointer ${card.color} ${idx === activeIndex
+                                className={`absolute inset-0 rounded-2xl text-white transition-all duration-500 cursor-pointer ${idx === activeIndex
                                     ? 'translate-y-0 scale-100 z-10 shadow-2xl'
-                                    : 'translate-y-4 scale-95 opacity-50 z-0 shadow-lg'
+                                    : 'translate-y-5 scale-[0.94] z-0 shadow-lg'
                                     }`}
-                                style={{ opacity: idx === activeIndex ? 1 : 0.45 }}
+                                style={{ opacity: idx === activeIndex ? 1 : 0.4 }}
+                            >
+                            <div className={`w-full h-full rounded-2xl p-6 ${card.color}`} style={idx === activeIndex ? {} : { filter: 'blur(1px)' }}
                             >
                                 <div className="flex justify-between items-start mb-12">
                                     <div className="space-y-0.5">
@@ -128,6 +130,7 @@ const CardManagement: React.FC<CardManagementProps> = ({ onBack }) => {
                                         </div>
                                     </div>
                                 )}
+                            </div>
                             </div>
                         ))}
                     </div>
