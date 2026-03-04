@@ -55,7 +55,7 @@ const PersonaSelector: React.FC<PersonaSelectorProps> = ({ personas, onSelect, i
           <h1 className="text-2xl font-bold tracking-tight mb-3 text-[#333333] dark:text-white">
             Oracle
           </h1>
-          <p className="text-base text-slate-600 dark:text-zinc-400 font-semibold tracking-wide">
+          <p className="text-base text-[#333333] dark:text-white font-semibold tracking-wide">
             AI Companion by Federal Bank
           </p>
           <p className="text-slate-500 dark:text-zinc-400 text-sm mt-4 max-w-xs mx-auto leading-relaxed">
