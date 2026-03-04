@@ -52,7 +52,7 @@ const PersonaSelector: React.FC<PersonaSelectorProps> = ({ personas, onSelect, i
           <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#f37021] to-[#FFD740] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-500/20">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight mb-3 text-[#333333] dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight mb-1 text-[#333333] dark:text-white">
             Oracle
           </h1>
           <p className="text-base text-[#333333] dark:text-white font-semibold tracking-wide">
